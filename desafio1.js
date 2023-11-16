@@ -12,7 +12,7 @@ class ProductManager {
 
         //Validar campo "code"
         if(this.products.some(prod => prod.code === product.code)){
-            console.log("Ya existe el producto");
+            console.error("Ya existe el producto");
             return;
         }
 
@@ -64,4 +64,6 @@ productManager.addProduct({
 });
 
 const foundProduct = productManager.getProductsById(1);
-console.log("Producto encontrado: ", foundProduct);
+if(foundProduct){
+    console.log("Producto encontrado: ", foundProduct);
+}
