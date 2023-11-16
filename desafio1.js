@@ -38,7 +38,7 @@ class ProductManager {
 }
 
 
-// Ejemplo de uso
+// Proceso de Testing
 const productManager = new ProductManager();
 
 console.log("Todos los productos: ", productManager.getProducts())
