@@ -89,13 +89,12 @@ class ProductManager {
 // Proceso de Testing
 const productManager = new ProductManager("./productos.json");
 
-(async () => {
-    try {
-        const products = await productManager.getProducts()
-        console.log("Todos los productos: ", products)
-    } catch (error) {
-        console.log("Error: ", error)
-    }
+const Testing = async () => {
+    //Se llama getProducts para devolver un array vacio
+    const products = await productManager.getProducts()
+    console.log("Todos los productos: ", products)
+
+    //Se agrega un producto
     await productManager.addProduct({
         title: "Producto prueba",
         description: "Este es un producto prueba",
@@ -105,40 +104,32 @@ const productManager = new ProductManager("./productos.json");
         stock: 25
     });
 
-    try {
-        const productFound = await productManager.getProductsById(1)
-        console.log("Producto Encontrado: ", productFound)
-    } catch (error) {
-        console.log("Error: ", error)
-    }
+    //Se llama nuevamente getProducts para ver el produco agregado
+    const productsNew = await productManager.getProducts()
+    console.log("Todos los productos: ", productsNew)
 
-    try {
-        const idToUpdate = 1;
-        const fieldToUpdate = 'price';
-        const valueToUpdate = 100;
-        const objectToUpdate = { newVariable: 'New Field', price: 500 };
-        await productManager.updateProduct(idToUpdate, objectToUpdate);
-        //await productManager.updateProduct(idToUpdate, fieldToUpdate);
-        //await productManager.updateProduct(idToUpdate, { [fieldToUpdate]: valueToUpdate });
-    } catch (error) {
-        console.log("El producto no hay podido ser modificado. ", error.message)
-    }
+    //Se busca un producto por Id
+    const productFound = await productManager.getProductsById(1)
+    console.log("Producto Encontrado: ", productFound)
 
-    try {
-        const products = await productManager.getProducts()
-        console.log("Todos los productos: ", products)
-    } catch (error) {
-        console.log("Error: ", error)
-    }
+    //Se modifica el producto por el Id (Puede ser objeto o string)
+    const idToUpdate = 1;
+    const fieldToUpdate = 'price';
+    const valueToUpdate = 100;
+    const objectToUpdate = { newVariable: 'New Field', price: 500 };
+    await productManager.updateProduct(idToUpdate, objectToUpdate);
+    await productManager.updateProduct(idToUpdate, fieldToUpdate);
+    await productManager.updateProduct(idToUpdate, { [fieldToUpdate]: valueToUpdate });
 
-    try {
-        const idToDelete = 1
-        await productManager.deleteProduct(idToDelete)
-        console.log(`El producto con el id: ${idToDelete} ha sido eliminado correctamente`)
-    } catch (error) {
-        console.log("El producto no hay podido ser eliminado. ", error.message)
-    }
- }) ();
- 
+    //Se llama getProducts para ver el producto modificado
+    const productChange = await productManager.getProducts()
+    console.log("Producto Modificado: ", productChange)
 
- 
+    //Se elimina un producto por Id
+    const idToDelete = 1
+    await productManager.deleteProduct(idToDelete)
+    console.log(`El producto con el id: ${idToDelete} ha sido eliminado correctamente`)
+}
+
+Testing()
+
