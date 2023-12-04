@@ -86,8 +86,10 @@ class ProductManager {
     }
 }
 
+module.exports = ProductManager;
+
 // Proceso de Testing
-const productManager = new ProductManager("./productos.json");
+/* const productManager = new ProductManager("./src/productos.json");
 
 const Testing = async () => {
     //Se llama getProducts para devolver un array vacio
@@ -131,5 +133,4 @@ const Testing = async () => {
     console.log(`El producto con el id: ${idToDelete} ha sido eliminado correctamente`)
 }
 
-Testing()
-
+Testing() */
