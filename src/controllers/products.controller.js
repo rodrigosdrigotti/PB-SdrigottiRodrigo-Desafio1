@@ -7,7 +7,7 @@ const productManager = new ProductManager("./src/productos.json");
 
 router.get('/', async (req, res) => {
     
-    const { limit } = req.query
+    /* const { limit } = req.query
 
     const products = await productManager.getProducts()
     
@@ -15,8 +15,25 @@ router.get('/', async (req, res) => {
         return res.json({products: products.slice(0,limit)})
     }
 
-    res.json({ products: products })
+    res.json({ products: products }) */
+
+    const { limit } = req.query
+    const products = await productManager.getProducts()
+
+    if(limit){
+        return res.render('home', { 
+            products: products.slice(0,limit), 
+            style: 'index.css'
+        })
+    }
+
+    res.render('home', { 
+        products, 
+        style: 'index.css'
+    })
 })
+
+
 
 router.get('/:pid', convertToNumber, async (req, res) => {
 
