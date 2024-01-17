@@ -1,24 +1,46 @@
 <h2>Lista de Productos</h2>
 
-{{#each products}}
+{{#if productFound}}
     <div class="container">
         <div class="productCard">
             <div class="info">
-                <p>{{this.id}}</p>
-                <p>{{this.title}}</p>
-                <p>{{this.description}}</p>
-                <p>{{this.code}}</p>
-                <p>${{this.price}}</p>
-                <p>{{this.status}}</p>
-                <p>{{this.stock}}</p>
-                <p>{{this.category}}</p>
+                <p>{{productFound.id}}</p>
+                <p>{{productFound.title}}</p>
+                <p>{{productFound.description}}</p>
+                <p>{{productFound.code}}</p>
+                <p>${{productFound.price}}</p>
+                <p>{{productFound.status}}</p>
+                <p>{{productFound.stock}}</p>
+                <p>{{productFound.category}}</p>
             </div>
             <div class="images">
                 <div class="img">
-                    <img src="{{this.thumbnail}}">
+                    <img src="{{productFound.thumbnail}}">
+                </div>
+             </div>
+        </div>
+    </div>
+{{else}}
+    {{#each products}}
+        <div class="container">
+            <div class="productCard">
+                <div class="info">
+                    <p>{{this.id}}</p>
+                    <p>{{this.title}}</p>
+                    <p>{{this.description}}</p>
+                    <p>{{this.code}}</p>
+                    <p>${{this.price}}</p>
+                    <p>{{this.status}}</p>
+                    <p>{{this.stock}}</p>
+                    <p>{{this.category}}</p>
+                </div>
+                <div class="images">
+                    <div class="img">
+                        <img src="{{this.thumbnail}}">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{{/each}}
+    {{/each}}
+{{/if}}
 

@@ -18,7 +18,7 @@ class CartManager {
         }
     }
 
-    async addCart() {
+    async newCart() {
         const newCart = {
             id: this.counterId++,
             products: [],
@@ -28,13 +28,13 @@ class CartManager {
         
         try { 
             await fs.writeFile(this.path, JSON.stringify(this.carts, null, 2), 'utf-8');
-            console.log("Carrito agregado", newCart);
+            //console.log("Carrito agregado", newCart);
             return newCart;
         } catch (error) {
             console.log("Error al escribir el archivo: ", error.message)
         }
     }
-    async getCart() {
+    async allCarts() {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
             this.carts = dataRead;
@@ -44,10 +44,10 @@ class CartManager {
             return [];
         }
     }
-    async getCartProductsById(id) {
+    async oneCartById(id) {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
-            const cartProductsFound = dataRead.find(cart => cart.id === id)
+            const cartProductsFound = dataRead.find(cart => cart.id === Number(id))
             if(cartProductsFound){
                 return cartProductsFound;
             }
@@ -59,9 +59,9 @@ class CartManager {
             console.log("Error al buscar el producto: ", error.message)
         }
     }
-    async addProductToCart(cid, pid) {
-        const cartExist = this.carts.find(cart => cart.id === cid)
-        const cartIndex = this.carts.findIndex(cart => cart.id === cid)
+    async newProductAddedToCart(cid, pid) {
+        const cartExist = this.carts.find(cart => cart.id === Number(cid))
+        const cartIndex = this.carts.findIndex(cart => cart.id === Number(cid))
 
         if(cartExist){
             const prodExist = cartExist.products.find(prod => prod.id === pid)
@@ -80,7 +80,7 @@ class CartManager {
 
         try { 
             await fs.writeFile(this.path, JSON.stringify(this.carts, null, 2), 'utf-8');
-            console.log("Producto agregado", cartExist);
+            //console.log("Producto agregado", cartExist);
             return cartExist;
         } catch (error) {
             console.log("Error al escribir el archivo: ", error.message)

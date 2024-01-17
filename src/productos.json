@@ -108,5 +108,17 @@
     "stock": 12,
     "category": "electronics",
     "thumbnail": "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg"
+  },
+  {
+    "title": "Title Test Updated",
+    "description": "description test",
+    "code": "abc345test",
+    "price": 2000,
+    "stock": 49,
+    "category": "test",
+    "createdAt": "2024-01-16T11:37:11.584Z",
+    "updatedAt": "2024-01-16T11:37:19.435Z",
+    "id": 11,
+    "status": false
   }
 ]

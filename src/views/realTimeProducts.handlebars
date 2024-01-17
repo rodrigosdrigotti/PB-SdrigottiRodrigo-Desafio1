@@ -1,4 +1,42 @@
-<h2>Real Time Products</h2>
+<h2>Lista de Productos en Tiempo Real</h2>
 
+<!-- Formulario para agregar productos -->
+<form id="productForm">
+  <div class="containerForm">
+    <input type="text" id="productTitle" placeholder="Nombre del Producto" required>
+    <input type="text" id="productDescription" placeholder="Descripcion del Producto" required>
+    <input type="text" id="productCode" placeholder="Code del Producto" >
+    <input type="text" id="productPrice" placeholder="Precio del Producto" >
+    <input type="text" id="productStock" placeholder="Stock del Producto" >
+    <input type="text" id="productCategory" placeholder="Categoria del Producto" >
+    <button type="submit">Agregar Producto</button>
+  </div>
+</form>
+
+<ul id="productList">
+  {{#each products}}
+    <div class="container">
+        <div class="productCard">
+            <div class="info">
+                <p>{{this.id}}</p>
+                <p>{{this.title}}</p>
+                <p>{{this.description}}</p>
+                <p>{{this.code}}</p>
+                <p>${{this.price}}</p>
+                <p>{{this.status}}</p>
+                <p>{{this.stock}}</p>
+                <p>{{this.category}}</p>
+            </div>
+            <div class="images">
+                <div class="img">
+                    <img src="{{this.thumbnail}}">
+                </div>
+            </div>
+        </div>
+    </div>
+  {{/each}}
+</ul>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products.js"></script>

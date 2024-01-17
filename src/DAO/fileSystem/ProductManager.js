@@ -18,7 +18,7 @@ class ProductManager {
         }
     }
 
-    async addProduct (product) {
+    async newProduct(product) {
         //Validar campos obligatiorios menos thumbnails
         if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
             console.log("Todos los campos son obligatorios");
@@ -42,20 +42,21 @@ class ProductManager {
             console.log("Error al escribir el archivo: ", error.message)
         }
     }
-    async getProducts() {
+    async allProducts() {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
+            const productsFiltered = dataRead.filter(prod => prod.status === true)
             //this.products = dataRead;
-            return dataRead;
+            return productsFiltered;
         } catch (error) {
             console.log("Error al leer Archivo", error.message)
             return [];
         }
     }
-    async getProductsById(id) {
+    async oneProductById(id) {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
-            const productFound = dataRead.find(prod => prod.id === id)
+            const productFound = dataRead.find(prod => prod.id === Number(id))
             if(productFound){
                 return productFound;
             }
@@ -70,7 +71,7 @@ class ProductManager {
     async updateProduct(id, newProduct) {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
-            const index = dataRead.findIndex(prod => prod.id === id)
+            const index = dataRead.findIndex(prod => prod.id === Number(id))
             
             if(dataRead) {
                 if(typeof newProduct === "object"){
@@ -85,19 +86,19 @@ class ProductManager {
             console.log("Error al modificar el archivo. ", error.message);
         }
     }
-    async deleteProduct(id) {
+    async deleteProduct(id, newStatus) {
         try {
             const dataRead = JSON.parse(await fs.readFile(this.path, "utf-8"))
-            const prodIndex = dataRead.findIndex(prod => prod.id === id)
+            const prodIndex = dataRead.findIndex(prod => prod.id === Number(id))
             
             if(prodIndex === -1) {
                 console.error("Producto no encontrado");
                 return null;
             }
+            dataRead[prodIndex] = {...dataRead[prodIndex], ...newStatus}
             
-            const productFound = dataRead.filter(prod => prod.id !== id)
-            await fs.writeFile(this.path, JSON.stringify(productFound, null, 2), 'utf8');
-            return productFound
+            return await fs.writeFile(this.path, JSON.stringify(dataRead, null, 2), 'utf8');
+            
             
         } catch (error) {
             console.log("Error al eliminar el producto: ", error.message)
@@ -107,49 +108,3 @@ class ProductManager {
 
 module.exports = ProductManager;
 
-// Proceso de Testing
-/* const productManager = new ProductManager("./src/productos.json");
-
-const Testing = async () => {
-    //Se llama getProducts para devolver un array vacio
-    const products = await productManager.getProducts()
-    console.log("Todos los productos: ", products)
-
-    //Se agrega un producto
-    await productManager.addProduct({
-        title: "Producto prueba",
-        description: "Este es un producto prueba",
-        price: 200,
-        thumbnail: "Sin imagen",
-        code: "abc123",
-        stock: 25
-    });
-
-    //Se llama nuevamente getProducts para ver el produco agregado
-    const productsNew = await productManager.getProducts()
-    console.log("Todos los productos: ", productsNew)
-
-    //Se busca un producto por Id
-    const productFound = await productManager.getProductsById(1)
-    console.log("Producto Encontrado: ", productFound)
-
-    //Se modifica el producto por el Id (Puede ser objeto o string)
-    const idToUpdate = 1;
-    const fieldToUpdate = 'price';
-    const valueToUpdate = 100;
-    const objectToUpdate = { newVariable: 'New Field', price: 500 };
-    await productManager.updateProduct(idToUpdate, objectToUpdate);
-    await productManager.updateProduct(idToUpdate, fieldToUpdate);
-    await productManager.updateProduct(idToUpdate, { [fieldToUpdate]: valueToUpdate });
-
-    //Se llama getProducts para ver el producto modificado
-    const productChange = await productManager.getProducts()
-    console.log("Producto Modificado: ", productChange)
-
-    //Se elimina un producto por Id
-    const idToDelete = 1
-    º
-    console.log(`El producto con el id: ${idToDelete} ha sido eliminado correctamente`)
-}
-
-Testing() */

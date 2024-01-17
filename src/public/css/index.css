@@ -1,3 +1,17 @@
+/* * {
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 50px;
+    background-color: beige;
+} */
 * {
     margin: 0;
     padding: 0px;
@@ -11,9 +25,16 @@ body{
     text-align: center;
     background-color: #212121;
 }
+h1 {
+    color: white;
+    padding-top: 50px;
+}
 h2 {
     color: white;
     padding-top: 50px;
+}
+#messageLogs {
+    color: white;
 }
 .container {
     display: flex;
@@ -23,6 +44,22 @@ h2 {
     justify-content: center;
     gap: 30px;
     margin: 30px auto;
+}
+.containerForm {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px auto;
+}
+input {
+    width: 100%;
+    border-radius: 10px;
+    padding: 12.5px;
+    border: none;
 }
 .productCard {  
     display: flex;
@@ -55,4 +92,24 @@ h2 {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+#chatBox {
+    margin-top: 20px;
+    width: 250px;
+    height: 30px;
+}
+.messages {
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 20px;
+    width: 400px;
+    height: 600px;
+}
+#messageLogs {
+    margin-top: 50px;
+    border-radius: 20px;
+    padding: 10px;
+    padding-left: 30px;
+    text-align: start;
+    line-height: 30px;
 }

@@ -1,94 +1,119 @@
 const { Router } = require('express')
-const ProductManager = require('../ProductManager');
-const { convertToNumber } = require('../middlewares/convert-to-number.middleware');
+const HTTP_RESPONSES = require('../constants/http-responses.constant')
+const productsService = require('../services/product.service')
 
-const router = Router();
-const productManager = new ProductManager("./src/productos.json");
+const router = Router()
 
 router.get('/', async (req, res) => {
-    
-    /* const { limit } = req.query
-
-    const products = await productManager.getProducts()
-    
-    if(limit) {
-        return res.json({products: products.slice(0,limit)})
-    }
-
-    res.json({ products: products }) */
-
-    const { limit } = req.query
-    const products = await productManager.getProducts()
-
-    if(limit){
-        return res.render('home', { 
-            products: products.slice(0,limit), 
-            style: 'index.css'
+    try {
+        const products = await productsService.getAll()
+        
+        res.render('home', { 
+            products, 
+            style: 'index.css',
         })
-    }
+        //res.json({ status: 'success', payload: products})
 
-    res.render('home', { 
-        products, 
-        style: 'index.css'
-    })
-})
-
-
-
-router.get('/:pid', convertToNumber, async (req, res) => {
-
-    const { pid } = req.params
-
-    const productId = await productManager.getProductsById(pid)
-
-    if(productId){
-        res.json({ products: productId })
-    }
-    else{
-        res.status(404).json({Error: "Producto no Encontrado"})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
     }
 })
 
+router.get('/:pid', async (req, res) => {
+    try {
+        const { pid } = req.params
+
+        const productFound = await productsService.getOneById(pid)
+
+        res.render('home', { 
+            productFound, 
+            style: 'index.css',
+        })
+
+        //res.json({ status: 'success', payload: productFound})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+   
 router.post('/', async (req, res) => {
+    try {
+        const { title, description, code, price, stock, category } = req.body
+        if(!title || !description || !code || !price || !stock || !category)
+            res
+            .status(HTTP_RESPONSES.BAD_REQUEST)
+            .json({ status: 'error', error: HTTP_RESPONSES.BAD_REQUEST_CONTENT})
 
-    const product = req.body
+        const newProductInfo = {
+            title,
+            description,
+            code,
+            price,
+            stock,
+            category,
+        } 
 
-    const productToAdd = await productManager.addProduct(product)
-    
-    if(productToAdd){
-        res.json({ productAdded: product })
-    }
-    else{
-        res.status(404).json({Error: "Producto no agregado"})
-    }
-})
+        const newProduct = await productsService.insertOne(newProductInfo)
 
-router.put('/:pid', convertToNumber, async (req, res) => {
-
-    const { pid } = req.params
-    const dataToUpdate = req.body
-    
-    const productUpdate = await productManager.updateProduct(pid, dataToUpdate)
-
-    if(productUpdate){
-        res.json({ productUpdated: productUpdate })
-    }
-    else{
-        res.status(404).json({Error: "Producto no Encontrado"})
-    }
-})
-
-router.delete('/:pid', convertToNumber, async (req, res) => {
-    const { pid } = req.params
-
-    const productDeleted = await productManager.deleteProduct(pid)
-    console.log(productDeleted)
-    if(productDeleted){
-        res.json({ message: "Producto Eliminado" })
-    }
-    else{
-        res.status(404).json({Error: "Producto no Encontrado"})
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: newProduct})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
     }
 })
 
-module.exports = router;
+router.put('/:pid', async (req, res) => {
+    try {
+        const { pid } = req.params
+        const { title, description, code, price, stock, status, category  } = req.body
+        if(!title || !description || !code || !price || !stock || !category)
+            res
+            .status(HTTP_RESPONSES.BAD_REQUEST)
+            .json({ status: 'error', error: HTTP_RESPONSES.BAD_REQUEST_CONTENT})
+
+            const productInfo = {
+                title,
+                description,
+                code,
+                price,
+                stock,
+                status,
+                category,
+                updatedAt: new Date(),
+            } 
+            
+            const productUpdate = await productsService.updateOne(pid, productInfo)
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: productUpdate})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+router.delete('/:pid', async (req, res) => {
+    try {
+        const { pid } = req.params
+        const newStatus = { status: false }
+        const productDelete = await productsService.deleteOne(pid, newStatus)
+        
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: productDelete})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+module.exports = router
