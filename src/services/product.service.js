@@ -1,8 +1,16 @@
-const ProductManager = require("../DAO/fileSystem/ProductManager")
 const ProductDAO = require("../DAO/mongo/product-dao.mongo")
 
 const Product = new ProductDAO()
-//const Product = new ProductManager("./src/productos.json")
+
+const addAllProducts = async allProductsToAdd => {
+    try {
+        const products = await Product.insertManyProducts(allProductsToAdd)
+        
+        return products
+    } catch (error) {
+        throw error
+    }
+}
 
 const getAll = async () => {
     try {
@@ -57,10 +65,22 @@ const deleteOne = async (pid, newStatus) => {
     }
 }
 
+const deleteAll = async () => {
+    try {
+        const productDeleted =  await Product.daleteAllProducts()
+        
+        return productDeleted
+    } catch (error) {
+        throw error
+    }
+}
+
 module.exports = {
+    addAllProducts,
     getAll,
     getOneById,
     insertOne, 
     updateOne,
     deleteOne,
+    deleteAll,
 }

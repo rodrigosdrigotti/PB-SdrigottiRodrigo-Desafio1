@@ -1,0 +1,29 @@
+<h1>Carrito</h1>
+  <h2>Productos en el carrito</h2>
+  
+  <div class="container">
+    <div class="cart-container">
+    {{#each cartId}}
+        <div class="cart-card">
+            <div class="info-card">
+                <div class="img">
+                    <img src="{{this.product.thumbnail}}">
+                </div>
+            </div>
+            <div class="info-text">
+                <p class="info-text-title">{{this.product.title}}</p>
+                <div class="info-text-price">
+                    <p>Price: ${{this.product.price}}</p>
+                    <p>Stock: {{this.product.stock}}</p>
+                </div>
+            </div>
+            <div class="info-total">
+                <p>Cant: {{this.quantity}}</p>
+                <p>P/Uni.: {{this.product.price}}</p>
+                <p>Total: </p>
+            </div>
+        </div>
+    {{/each}}
+    </div>
+    <h3>Total del carrito: </h3>
+  </div>

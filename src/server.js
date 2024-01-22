@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(process.cwd() + '/src/public'))
 
 app.engine('handlebars', handlebars.engine({
-    //defaultLayout: "main",
     runtimeOptions: {
       allowProtoPropertiesByDefault: true,
       allowProtoMethodsByDefault: true,

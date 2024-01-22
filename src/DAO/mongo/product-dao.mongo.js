@@ -1,6 +1,15 @@
 const Product = require("../models/product.nodel");
 
 class ProductDAO {
+
+    async insertManyProducts(allProductsToAdd) {
+        return await Product.insertMany(allProductsToAdd)
+    }
+    
+    async daleteAllProducts() {
+        return await Product.deleteMany({})
+    }
+
     async allProducts() {
         return await Product.find({status: true})
     }

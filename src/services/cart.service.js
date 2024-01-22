@@ -1,8 +1,6 @@
-const CartManager = require("../DAO/fileSystem/CartManager");
 const CartDAO = require("../DAO/mongo/cart-dao.mongo");
 
 const Cart = new CartDAO()
-//const Cart = new CartManager("./src/carrito.json")
 
 const getAll = async () => {
     try {
@@ -37,11 +35,41 @@ const insertOne = async newCartInfo => {
     }
 } 
 
-const insertInsideOne = async (cid, pid)=> {
+const insertInsideOne = async (cid, pid) => {
     try {
         const productAddedToCart = await Cart.newProductAddedToCart(cid, pid)
 
         return productAddedToCart
+    } catch (error) {
+        throw error
+    }
+}
+
+const updateOne = async (cid, pid, quantity) => {
+    try {
+        const productToUpdateQuantity = await Cart.updateProductQuantity(cid, pid, quantity)
+
+        return productToUpdateQuantity
+    } catch (error) {
+        throw error
+    }
+}
+
+const deleteOne = async (cid, pid) => {
+    try {
+        const productDeleted = await Cart.deleteProductInCart(cid, pid)
+
+        return productDeleted
+    } catch (error) {
+        throw error
+    }
+}
+
+const deleteAll = async (cid) => {
+    try {
+        const productDeleted = await Cart.deleteAllProductsInCart(cid)
+
+        return productDeleted
     } catch (error) {
         throw error
     }
@@ -52,4 +80,7 @@ module.exports = {
     getOneById,
     insertOne,
     insertInsideOne,
+    updateOne,
+    deleteOne,
+    deleteAll,
 }
