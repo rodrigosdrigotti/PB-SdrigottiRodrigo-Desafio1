@@ -2,6 +2,28 @@
 
 <div class="containerP">
     <div class="products-container">
+        {{#if productFound}}
+        <div class="container">
+            <div class="productCard">
+                <div class="info">
+                    <p class="product-title">{{productFound.title}}</p>
+                    <div class="images">
+                        <div class="img">
+                            <img src="{{productFound.thumbnail}}">
+                        </div>
+                    </div>
+                    <p>{{productFound.category}}</p>
+                    <p>{{productFound.description}}</p>
+                    <p>CODE: {{productFound.code}}</p>
+                    <div class="info-price">
+                        <p>PRICE: ${{productFound.price}}</p>
+                        <p>STOCK: {{productFound.stock}}</p>
+                    </div>
+                </div>
+                <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button></a>
+            </div>
+        </div>
+        {{else}}
         {{#each products}}
         <div class="productCard">
             <div class="info">
@@ -19,9 +41,10 @@
                     <p>STOCK: {{this.stock}}</p>
                 </div>
             </div>
-            <a href="/api/carts/"><button class="button">Add to Cart</button></a>
+            <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button></a>
         </div>
         {{/each}}
+        {{/if}}
     </div>
     {{#if hasPrevPage}}
         <a href="{{prevLink}}"><button class="button">Anterior</button></a>
@@ -32,4 +55,4 @@
     {{/if}}
 </div>
 
-
+<script src="/js/index.js"></script>

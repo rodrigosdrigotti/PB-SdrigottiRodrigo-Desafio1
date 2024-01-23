@@ -45,6 +45,16 @@ const insertInsideOne = async (cid, pid) => {
     }
 }
 
+const insertInsideOnePatch = async (cid, pid, quantity) => {
+    try {
+        const productAddedToCart = await Cart.newProductAddedToCartPatch(cid, pid, quantity)
+
+        return productAddedToCart
+    } catch (error) {
+        throw error
+    }
+}
+
 const updateOne = async (cid, pid, quantity) => {
     try {
         const productToUpdateQuantity = await Cart.updateProductQuantity(cid, pid, quantity)
@@ -80,6 +90,7 @@ module.exports = {
     getOneById,
     insertOne,
     insertInsideOne,
+    insertInsideOnePatch,
     updateOne,
     deleteOne,
     deleteAll,

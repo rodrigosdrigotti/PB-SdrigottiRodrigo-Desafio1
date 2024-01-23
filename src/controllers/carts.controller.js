@@ -3,7 +3,7 @@ const HTTP_RESPONSES = require('../constants/http-responses.constant')
 const cartsService = require('../services/cart.service')
 
 const router = Router()
-
+//Devuelve todos los carritos de compras
 router.get('/', async (req, res) => {
     try {
         const carts = await cartsService.getAll()
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         .json({  status: 'error', error  })
     }
 })
-
+//Devuelve un carrito a traves del CID pasado por parametro
 router.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
@@ -34,7 +34,7 @@ router.get('/:cid', async (req, res) => {
         .json({  status: 'error', error: 'Carrito no Encontrado'  })
     }
 })
-
+//Crea un carrito con un array de productos vacio
 router.post('/', async (req, res) => {
     try {
         const newCartInfo = {
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         .json({  status: 'error', error  })
     }
 })
-
+//Agrega un producto por PID al carrito indicado por CID
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params
@@ -68,7 +68,25 @@ router.post('/:cid/product/:pid', async (req, res) => {
         .json({  status: 'error', error  })
     }
 })
+//Agrega un producto por PID al carrito indicado por CID
+router.put('/:cid', async (req, res) => {
+    try {
+        const cid = req.params.cid
+        const pid = req.body.productId
+        const quantity = req.body.quantity || 1
 
+        const productAdded = await cartsService.insertInsideOnePatch(cid, pid, quantity)
+
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: productAdded})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+//Actualizar SÓLO la variable quantity del producto indicado por la cantidad pasada por body
 router.put('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params
@@ -85,7 +103,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
         .json({  status: 'error', error  })
     }
 })
-
+//Eliminar del carrito el producto seleccionado.
 router.delete('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params
@@ -101,7 +119,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
         .json({  status: 'error', error  })
     }
 })
-
+//Eliminar todos los productos del carrito 
 router.delete('/:cid', async (req, res) => {
     try {
         const { cid } = req.params

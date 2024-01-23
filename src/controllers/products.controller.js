@@ -66,7 +66,7 @@ router.get('/:pid', async (req, res) => {
         const { pid } = req.params
 
         const productFound = await productsService.getOneById(pid)
-
+        
         res.render('home', { 
             productFound, 
             style: 'index.css',

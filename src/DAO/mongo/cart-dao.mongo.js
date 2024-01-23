@@ -29,6 +29,22 @@ class CartDAO {
         }
     }
 
+    async newProductAddedToCartPatch(cid, pid, quantity) {
+        const cart = await Cart.findById(cid)    
+        const existingProductIndex = cart.products.findIndex(prod => prod.product.equals(pid))
+        
+        if(existingProductIndex !== -1 ){
+            cart.products[existingProductIndex].quantity += quantity
+            return await Cart.updateOne({_id: cid}, cart)
+        } else {
+            cart.products.push({
+                product: pid,
+                quantity: quantity
+            })
+            return await Cart.updateOne({_id: cid}, cart)
+        }
+    }
+
     async updateProductQuantity(cid, pid, quantity) {
         const cart = await Cart.findById(cid)    
         const productInCart = cart.products.find(prod => prod.product.equals(pid))
