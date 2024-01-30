@@ -1,5 +1,4 @@
 const form = document.getElementById('signupForm')
-const socket = io()
 
 form.addEventListener('submit', e => {
     e.preventDefault()
@@ -29,15 +28,3 @@ form.addEventListener('submit', e => {
     .catch(error => console.log(error))
 })
 
-
-socket.on('newUserDB', user => {
-    Swal.fire({
-        text: `Se acaba de conectar ${user.first_name}`,
-        icon: 'success',
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-    })
-})

@@ -1,7 +1,5 @@
 const { Router } = require('express')
 const User = require('../DAO/models/user.model')
-const io = require('socket.io-client')
-const socket = io('http://localhost:8080')
 
 const router = Router()
 
@@ -20,8 +18,6 @@ router.post('/', async (req, res) => {
 
         const user = await User.create(newUserInfo)
         
-        socket.emit('newUserDB', {user})
-
         res.status(201).json({ status: 'success', message: 'Registered Succesful'})
 
     } catch (error) {

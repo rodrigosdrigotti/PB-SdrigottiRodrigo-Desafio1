@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         email: user.email,
         role: user.role,
       }
-
+      
       res.json({ status: 'success', message: 'Login Succesful'})
   
     } catch (error) {
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
     req.session.destroy(err => {
       if(err) return res.json({error: err})
 
-      res.redirect('/api/login')
+      res.json({ status: 'success', message: 'Logout Succesful'})
     })
   })
 

@@ -2,7 +2,7 @@ const { Router } = require('express')
 const HTTP_RESPONSES = require('../constants/http-responses.constant')
 const productsService = require('../services/product.service')
 const Product = require("../DAO/models/product.nodel");
-const allProductsToAdd = require('../products.json')
+const allProductsToAdd = require('../products.json');
 
 const router = Router()
 
@@ -39,8 +39,8 @@ router.get('/', async (req, res) => {
         const {docs, pages, hasPrevPage, hasNextPage, prevPage, nextPage} = await Product.paginate(filter, {limit, page, sort, lean: true})
         const products = docs
         const { user } = req.session
-        console.log(user)
-        res.render('home', { 
+        
+        res.render('home.handlebars', { 
             user,
             products,
             totalPages: pages,
@@ -69,7 +69,7 @@ router.get('/:pid', async (req, res) => {
 
         const productFound = await productsService.getOneById(pid)
         
-        res.render('home', { 
+        res.render('home.handlebars', { 
             productFound, 
             style: 'index.css',
         })

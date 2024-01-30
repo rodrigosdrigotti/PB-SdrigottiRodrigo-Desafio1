@@ -19,7 +19,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: urlMongo,
     }),
-    resave: false,
+    resave: true,
     saveUninitialized: false
   })
 )
