@@ -24,6 +24,6 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    .then( window.location.href = "/api/products" )
+    .then( () => window.location.href = "/api/products" )
     .catch(error => console.log(error))
 })
