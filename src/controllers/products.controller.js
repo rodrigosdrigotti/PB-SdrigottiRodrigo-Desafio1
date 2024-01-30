@@ -27,19 +27,21 @@ router.get('/', async (req, res) => {
         const sortDirection = req.query.sort === 'desc' ? -1 : 1
         const sort = req.query.sort ? { price: sortDirection } : undefined;
         const filter = {};
-
+        
         if (req.query.category) {
             filter.category = req.query.category
         }
-
+        
         if (Boolean(req.query.available)) {
             filter.available = req.query.available
         }
         
         const {docs, pages, hasPrevPage, hasNextPage, prevPage, nextPage} = await Product.paginate(filter, {limit, page, sort, lean: true})
         const products = docs
-        
+        const { user } = req.session
+        console.log(user)
         res.render('home', { 
+            user,
             products,
             totalPages: pages,
             prevPage,

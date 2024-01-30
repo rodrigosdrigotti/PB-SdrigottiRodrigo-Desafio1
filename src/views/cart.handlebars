@@ -1,7 +1,27 @@
+<header class='containerNav'>
+    <nav class='nav'>
+        <ul class='nav_list'>
+            <li class='nav_page'>
+                <a href="/api/products">Products</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/carts/65ad98aa813faafe418d2fde">Cart</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/profile">Profile</a>
+            </li>
+        </ul>
+    </nav>
+    <button class='nav-btn'>
+        <FaBars />
+    </button>
+</header>
+
 <h1>Carrito</h1>
-  <h2>Productos en el carrito</h2>
+
+<h3>Productos en el carrito</h3>
   
-  <div class="container">
+<div class="container">
     <div class="cart-container">
     {{#each cartId}}
         <div class="cart-card">
@@ -26,4 +46,4 @@
     {{/each}}
     </div>
     <h3>Total del carrito: </h3>
-  </div>
+</div>

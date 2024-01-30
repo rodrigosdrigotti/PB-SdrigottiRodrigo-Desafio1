@@ -1,0 +1,29 @@
+<div class='loginForm'>
+    <h1>Inicia Sesión</h1>
+    <form class='form' id="loginForm">
+        <label class='label'>
+            Email:
+            <input class='loginInput'
+                name='email'
+                type="email"
+                required
+            />
+        </label>
+        <label class='label'>
+            Contraseña:
+            <input class='loginInput' 
+                name='password'
+                type="password"
+                required
+            />
+        </label>
+        <div class='label'>
+            <button type='submit' class='loginButton'>Iniciar Sesion</button>
+        </div>
+        <div class='label-text'>
+            No tienes cuenta? <a href="/api/signup">Registrate</a>
+        </div>
+    </form>
+</div>
+
+<script src="/js/login.js"></script>

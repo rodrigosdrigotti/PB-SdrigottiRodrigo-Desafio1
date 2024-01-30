@@ -1,4 +1,28 @@
-<h2>Lista de Productos</h2>
+<header class='containerNav'>
+    <nav class='nav'>
+        <ul class='nav_list'>
+            <li class='nav_page'>
+                <a href="/api/products">Products</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/carts/65ad98aa813faafe418d2fde">Cart</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/profile">Profile</a>
+            </li>
+        </ul>
+        <div class='nav-icons'>
+            <p>BIENVENIDO/A:</p>
+            <p class="nameUser">{{user.first_name}}</p>
+            <p class="nameUser">{{user.role}}</p>
+        </div>
+    </nav>
+    <button class='nav-btn'>
+        <FaBars />
+    </button>
+</header>
+
+<h2>Products</h2>
 
 <div class="containerP">
     <div class="products-container">
@@ -47,12 +71,13 @@
         {{/if}}
     </div>
     {{#if hasPrevPage}}
-        <a href="{{prevLink}}"><button class="button">Anterior</button></a>
+        <a href="{{prevLink}}"><button class="button">Prev</button></a>
     {{/if}}
 
     {{#if hasNextPage}}
-        <a href="{{nextLink}}"><button class="button">Siguiente</button></a>
+        <a href="{{nextLink}}"><button class="button">Next</button></a>
     {{/if}}
 </div>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/index.js"></script>

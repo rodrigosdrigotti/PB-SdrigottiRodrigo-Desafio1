@@ -1,11 +1,7 @@
-/* let btn = document.getElementById('agregarProducto');
-   
-   // when the btn is clicked print info in console 
-   btn.addEventListener('click', (ev)=>{
-     console.log("Btn clicked");
-}); */
 
-document.addEventListener('DOMContentLoaded', function () {
+
+const test = document.addEventListener('DOMContentLoaded', function () {
+  if(test){
     let productToAdd = document.getElementById('agregarProducto')
   
         productToAdd.addEventListener('click', function () {
@@ -33,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error en la solicitud fetch:', error);
             });
     })
+  }
 }) 
 
 function addToCart(productId) {

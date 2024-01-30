@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const { dbUser, dbPassword, dbHost, dbName } = require('../configs/db.config')
+const { urlMongo } = require('../configs/urlMongo')
 
 const mongoConnect = async () => {
     try {
-       await mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}?retryWrites=true&w=majority`)
+       await mongoose.connect(urlMongo)
        console.log('DB is connected')
     } catch (error) {
         console.log(error)

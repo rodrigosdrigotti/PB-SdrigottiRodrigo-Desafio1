@@ -1,42 +1,154 @@
+@import url("https://fonts.googleapis.com/css?family=Sofia+Sans+Extra+Condensed");
+
 * {
     margin: 0;
     padding: 0px;
     box-sizing: border-box;
+    font-family: "Sofia Sans Extra Condensed";
+    font-weight: bolder;
+    font-size: 16px;
+    letter-spacing: 1px;
 }
-
 body{
-    height: 100vh;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #212121;
+    /* background-color: #212121; */
+    background-image: url(../img/fondoPared.jpg);
 }
+
+/* NAVBAR STYLE */
+.containerNav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    padding: 0 2rem;
+    background-color: #030303;
+    color: white;
+}
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+.nav_list {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+}
+.nav-icons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    gap: 10px;
+    right: 2rem;
+}
+.nav-icons a {
+    margin-right: 5px !important;
+}
+.nav-icon-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.nameUser {
+ color: white;
+}
+.btn-nav-icon-user {
+    color: black;
+    background-color: rgba(254, 97, 72, 0.9);
+    border: none;
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.nav_brand a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 2.5em;
+    text-decoration: none;
+}
+.nav a {
+    display: block;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 15px;
+}
+.nav a:hover {
+    color: rgba(254, 97, 72, 0.9);
+}
+.nav a::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0%;
+    background-color: rgba(254, 97, 72, 0.9);
+    transition: all ease-in-out 250ms;
+}
+.nav .carrito:hover::after {
+    width: 0;
+}
+.nav a:hover::after {
+    width: 100%;
+}
+.nav-btn {
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    visibility: hidden;
+    color: white;
+    opacity: 0;
+    font-size: 1.8rem;
+}
+.nav_brand {
+    width: 80px;
+    padding: 10px;
+}
+.nav_brand img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 h1 {
     color: white;
     padding-top: 50px;
+    font-size: 50px;
 }
 h2 {
     color: white;
     padding-top: 50px;
+    font-size: 50px;
 }
 h3 {
     color: white;
     padding-top: 20px;
+    font-size: 30px;
 }
 #messageLogs {
     color: white;
+}
+.containerP {
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 50px;
+    width: 100%;
 }
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-}
-.containerP {
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 50px;
     width: 100%;
 }
 .products-container {
@@ -78,7 +190,7 @@ input {
     align-items: center;
     flex-direction: column;
     width: 400px;
-    height: 525px;
+    height: 500px;
     border-radius: 30px;
     background-color: #f5f5f5;
 }
@@ -128,9 +240,11 @@ input {
     margin: 20px 0;
 }
 .product-title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: bolder;
     margin-bottom: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 .info-text-title {
     font-size: 16px;
@@ -200,4 +314,160 @@ input {
     width: 100px;
     border: none;
     border-radius: 10px;
+}
+
+/* FORM STYLE */
+.loginForm {
+    width: 500px;
+    margin: 150px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 3px 35px rgb(0 0 0 / 0.2);
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    width: 100%;
+}
+.loginForm h1 {
+    text-align: center;
+    color: #FFF;
+    font-size: 46px;
+    letter-spacing: 1.5px;
+    margin: 10px;
+}
+.label {
+    display: flex;
+    color: #FFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: start;
+    margin: 10px;
+    font-size: 20px;
+    gap: 10px;
+}
+.label-text {
+    display: flex;
+    color: #FFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: start;
+    margin: 10px;
+    font-size: 20px;
+    gap: 10px;
+}
+.label-forgot {
+    color: #FFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0 -20px 0;
+    gap: 10px;
+}
+.label-text a {
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    font-size: 20px;
+    text-decoration: none;
+}
+.label-forgot a {
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    font-size: 17px;
+    text-decoration: none;
+}
+.loginInput {
+    height: 50px;
+    color: #FFF;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    padding: 10px;
+}
+.loginInput::placeholder {
+    color: #ffffff85;
+    font-size: 20px;
+}
+.loginButton {
+    color: black;
+    background-color: rgba(254, 97, 72, 0.9);
+    border: none;
+    width: 100%;
+    padding: 12.5px;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 25px;
+}
+
+/* PROFILE STYLE */
+
+.profileContainer {
+    width: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 3px 35px rgb(0 0 0 / 0.2);
+}
+.labelProfile {
+    display: flex;
+    color: black;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    flex-direction: column;
+    margin: 10px;
+    font-size: 36px;
+    font-weight: bolder;
+    gap: 10px;
+}
+.infoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.textUser {
+    color: #FFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    margin: 10px;
+    font-size: 24px;
+}
+.logoutButton {
+    color: black;
+    background-color: rgba(254, 97, 72, 0.9);
+    border: none;
+    width: 50%;
+    padding: 12.5px;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 25px;
 }

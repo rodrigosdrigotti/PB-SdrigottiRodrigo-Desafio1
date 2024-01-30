@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
-
+        
         const cartId = await cartsService.getOneById(cid)
         
         res.render('cart', { 
