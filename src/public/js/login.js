@@ -24,6 +24,19 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    .then( () => window.location.href = "/api/products" )
+    //.then( () => window.location.href = "/api/products" )
+    .then(responseData => {
+        if (responseData.status === 'success') { 
+            window.location.href = '/api/products'; 
+        } else {
+            // Inicio de sesión no exitoso
+            console.log("Inicio de sesión fallido")
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Usuario o Contraseña incorrecta",
+              });
+        }
+    })
     .catch(error => console.log(error))
 })

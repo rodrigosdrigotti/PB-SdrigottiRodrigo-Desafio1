@@ -24,7 +24,16 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    //.then(data => console.log(data))
+    .then(responseData => {
+        if (responseData.status === 'success') { 
+            Swal.fire({
+                icon: "success",
+                title: "Felicitaciones",
+                text: "Se ha registrado correctamente. Inicie sesión",
+            })
+        }
+    })
     .catch(error => console.log(error))
 })
 
