@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 const session = require('express-session')
 const { urlMongo } = require('./configs/urlMongo')
+const initializePassport = require('./configs/passport.config')
+const passport = require('passport')
+
 
 const app = express()
 
@@ -23,6 +26,10 @@ app.use(
     saveUninitialized: false
   })
 )
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.engine('handlebars', handlebars.engine({
     runtimeOptions: {

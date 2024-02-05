@@ -14,7 +14,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }   
+    },
+    githubId: Number,
+    githubUsername: String,
 })
 
 const User = mongoose.model(userCollections, userSchema)

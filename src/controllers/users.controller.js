@@ -1,25 +1,23 @@
 const { Router } = require('express')
-const User = require('../DAO/models/user.model')
+const passport = require('passport')
 
 const router = Router()
 
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('register', {failureRedirect: '/api/users/fail-register'}), async (req, res) => {
     try {
-        const { first_name, last_name, email, password, password_confirm } = req.body
+        res.status(201).json({ status: 'success', message: `Registered Succesful` })
 
-        if(password !== password_confirm) return res.status(400).json({ message: 'Bad request' })
+    } catch (error) {
+        res
+        .status(500)
+        .json({ status: 'success', message: 'Internal Server Error'})
+    }
+})
 
-        const newUserInfo = {
-            first_name, 
-            last_name, 
-            email, 
-            password
-        }
-
-        const user = await User.create(newUserInfo)
-        
-        res.status(201).json({ status: 'success', message: 'Registered Succesful'})
-
+router.get('/fail-register', (req, res) => {
+    try {
+        console.log('Fallo Registro')
+        res.status(400).json({status: 'Error', error: 'Bad Request'})
     } catch (error) {
         res
         .status(500)

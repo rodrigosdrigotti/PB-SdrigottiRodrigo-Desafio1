@@ -3,6 +3,7 @@ const HTTP_RESPONSES = require('../constants/http-responses.constant')
 const productsService = require('../services/product.service')
 const Product = require("../DAO/models/product.nodel");
 const allProductsToAdd = require('../products.json');
+const privateAccess = require('../middlewares/private-access.middleware');
 
 const router = Router()
 
@@ -20,7 +21,7 @@ router.post('/insertProducts', async (req, res) => {
     }
 })
 
-router.get('/', async (req, res) => {
+router.get('/', privateAccess, async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 10
         const page = Number(req.query.page) || 1
