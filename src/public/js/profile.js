@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                window.location.href = '/api/login';
+                window.location.href = '/login.html';
             })
             .catch(error => console.log(error));
     });

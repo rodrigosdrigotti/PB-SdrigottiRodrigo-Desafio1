@@ -24,9 +24,8 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    //.then( () => window.location.href = "/api/products" )
     .then(responseData => {
-        if (responseData.status === 'success') { 
+        if (responseData.status === 'Success') { 
             window.location.href = '/api/products'; 
         } else {
             // Inicio de sesión no exitoso

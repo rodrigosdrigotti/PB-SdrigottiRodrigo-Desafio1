@@ -35,18 +35,19 @@ const test = document.addEventListener('DOMContentLoaded', function () {
 function addToCart(productId) {
     const quantity = 1;  // Puedes ajustar la cantidad según tus necesidades
 
-    // Realizar la solicitud PUT a la API
-    fetch(`/api/carts/65ad98aa813faafe418d2fde`, {
-      method: 'PUT',
+    // Realizar la solicitud POST a la API
+    fetch(`/api/carts`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ productId, quantity }),
     })
     .then(response => response.json())
-    .then(data => {
-      // Manejar la respuesta según tus necesidades
-      console.log('Carrito actualizado:', data);
+    .then(responseData => {
+      if (responseData.status === 'Success') { 
+          window.location.href = '/api/carts'; 
+      }
     })
     .catch(error => {
       console.error('Error al agregar al carrito:', error);

@@ -1,45 +1,45 @@
 const { Router } = require('express')
+const { generateToken } = require('../utils/jwt.util')
 const User = require('../DAO/models/user.model')
-const { createHash } = require('../utils/crypt-password.util')
-const passport = require('passport')
+const { useValidPassword, createHash } = require('../utils/crypt-password.util')
 
 const router = Router()
 
-router.post('/',passport.authenticate('login', {failureRedirect: '/api/auth/fail-login'}) , async (req, res) => {
+router.post('/', async (req, res) => {
   try {       
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      role: req.user.role,
+    const { email, password } = req.body
+
+    const user = await User.findOne({ email: email })
+    if (!user){
+      res.status(400).json({ status: 'error', error: 'Bad Request' })
     }
-      
-    res.json({ status: 'success', message: 'Login Succesful'})
+
+    if (!useValidPassword(user, password)) {
+      return res.status(400).json({ status: 'error', error: 'Bad Request' })
+    }
+
+    console.log(`Controller: ${user}`)
+
+    const token = generateToken({
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role,
+      cart: user.cart,
+    })
+
+    res 
+      .cookie('authToken', token, {
+        maxAge: 60000,
+        httpOnly: true
+      })
+      .json({ status: 'Success', payload: 'Logged In'})
   
   } catch (error) {
     res
       .status(500)
-      .json({ status: 'success', message: 'Internal Server Error' })
+      .json({ status: 'Success', message: 'Internal Server Error' })
   }
-})
-
-router.get('/fail-login', (req, res) => {
-  try {
-    console.log('Fallo el Login')
-    res.status(400).json({status: 'Error', error: 'Bad Request'})
-  } catch (error) {
-      res
-      .status(500)
-      .json({ status: 'success', message: 'Internal Server Error'})
-  }  
-})
-
-router.get('/logout', (req, res) => {
-  req.session.destroy(err => {
-    if(err) return res.json({error: err})
-
-    res.json({ status: 'success', message: 'Logout Succesful'})
-  })
 })
 
 router.post('/forgot-password', async (req, res) => {
@@ -51,22 +51,20 @@ router.post('/forgot-password', async (req, res) => {
 
     await User.updateOne({email}, {password: passwordEncrypted})
 
-    res.json({ status: 'success', message: 'Password Updated'})
+    res.json({ status: 'Success', message: 'Password Updated'})
 
   } catch (error) {
     res
       .status(500)
-      .json({ status: 'success', message: 'Internal Server Error' })
+      .json({ status: 'Success', message: 'Internal Server Error' })
   }
 })
 
-router.get('/github', passport.authenticate('github', {scope: ['user: email']}), (req, res) => {})
-
-router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/api/login'}), 
-  (req, res) => {
-    req.session.user = req.user
-    res.redirect('/api/products')
-  }
-)
+router.get('/logout', (req, res) => {
+  res
+    .clearCookie('authToken')
+    .status(200)
+    .json({ status: 'Success', payload: 'Logout Succesful'})
+})
 
 module.exports = router

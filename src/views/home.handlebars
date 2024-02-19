@@ -4,8 +4,11 @@
             <li class='nav_page'>
                 <a href="/api/products">Products</a>
             </li>
-            <li class='nav_page'>
+            {{!-- <li class='nav_page'>
                 <a href="/api/carts/65ad98aa813faafe418d2fde">Cart</a>
+            </li> --}}
+            <li class='nav_page'>
+                <a href="/api/carts">Cart</a>
             </li>
             <li class='nav_page'>
                 <a href="/api/profile">Profile</a>
@@ -44,7 +47,8 @@
                         <p>STOCK: {{productFound.stock}}</p>
                     </div>
                 </div>
-                <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button></a>
+                <a href="/api/carts"><button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button></a>
+                {{!-- <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button></a> --}}
             </div>
         </div>
         {{else}}
@@ -65,7 +69,8 @@
                     <p>STOCK: {{this.stock}}</p>
                 </div>
             </div>
-            <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button></a>
+            <button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button>
+            {{!-- <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button></a> --}}
         </div>
         {{/each}}
         {{/if}}

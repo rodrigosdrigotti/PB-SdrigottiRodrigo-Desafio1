@@ -3,14 +3,14 @@ const passport = require('passport')
 
 const router = Router()
 
-router.post('/', passport.authenticate('register', {failureRedirect: '/api/users/fail-register'}), async (req, res) => {
+router.post('/', passport.authenticate('register', {session: false}), async (req, res) => {
     try {
-        res.status(201).json({ status: 'success', message: `Registered Succesful` })
+        res.status(201).json({ status: 'Success', message: `Registered Succesful` })
 
     } catch (error) {
         res
         .status(500)
-        .json({ status: 'success', message: 'Internal Server Error'})
+        .json({ status: 'Success', message: 'Internal Server Error'})
     }
 })
 
@@ -21,7 +21,7 @@ router.get('/fail-register', (req, res) => {
     } catch (error) {
         res
         .status(500)
-        .json({ status: 'success', message: 'Internal Server Error'})
+        .json({ status: 'Success', message: 'Internal Server Error'})
     }
 })
 

@@ -24,9 +24,8 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    //.then(data => console.log(data))
     .then(responseData => {
-        if (responseData.status === 'success') { 
+        if (responseData.status === 'Success') { 
             Swal.fire({
                 icon: "success",
                 title: "Felicitaciones",

@@ -24,10 +24,9 @@ form.addEventListener('submit', e => {
         body: fetchParams.body
     })
     .then(response => response.json())
-    //.then( () => window.location.href = "/api/products" )
     .then(responseData => {
-        if (responseData.status === 'success') { 
-            window.location.href = '/api/login'; 
+        if (responseData.status === 'Success') { 
+            window.location.href = '/login.html'; 
         } else {
             // Inicio de sesión no exitoso
             console.log("Cambio de Contraseña fallida")
