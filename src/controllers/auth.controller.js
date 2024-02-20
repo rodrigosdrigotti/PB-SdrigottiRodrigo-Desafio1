@@ -2,6 +2,7 @@ const { Router } = require('express')
 const { generateToken } = require('../utils/jwt.util')
 const User = require('../DAO/models/user.model')
 const { useValidPassword, createHash } = require('../utils/crypt-password.util')
+const passport = require('passport')
 
 const router = Router()
 
@@ -17,8 +18,6 @@ router.post('/', async (req, res) => {
     if (!useValidPassword(user, password)) {
       return res.status(400).json({ status: 'error', error: 'Bad Request' })
     }
-
-    console.log(`Controller: ${user}`)
 
     const token = generateToken({
       email: user.email,
@@ -66,5 +65,28 @@ router.get('/logout', (req, res) => {
     .status(200)
     .json({ status: 'Success', payload: 'Logout Succesful'})
 })
+
+router.get('/github', passport.authenticate('github', {scope: ['user: email']}), (req, res) => {})
+
+router.get('/githubcallback', passport.authenticate('github', {session: false}), 
+  (req, res) => {
+
+    const token = generateToken({
+      email: req.user.email,
+      first_name: req.user.first_name,
+      githubUsername: req.user.githubUsername,
+      role: req.user.role,
+      cart: req.user.cart,
+    })
+
+    res 
+      .cookie('authToken', token, {
+        maxAge: 60000,
+        httpOnly: true
+      })
+      //.json({ status: 'Success', payload: 'Logged In'})
+      .redirect('/api/products')
+  }
+)
 
 module.exports = router

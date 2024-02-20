@@ -59,10 +59,13 @@ router.get('/:cid', async (req, res) => {
 //Crea un carrito con un array de productos vacio
 router.post('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
-        const user = req.user
+        const { email } = req.user
+        
+        const user = await User.findOne({email: email})
+
         const pid = req.body.productId
         const quantity = req.body.quantity || 1
-
+        
         if(!user.cart) {
             const newCartInfo = {
                 products: [{
@@ -97,7 +100,11 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
 //Eliminar del carrito el producto seleccionado por USUARIO.
 router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
-        const { cart } = req.user
+        const { email } = req.user
+        
+        const user = await User.findOne({email: email})
+
+        const { cart } = user
         const pid = req.body.productId
 
         const productDeleted = await cartsService.deleteOne(cart, pid)
@@ -123,7 +130,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
 
         res
         .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: productAdded})
+        .json({ status: 'Success', payload: productAdded})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
@@ -141,7 +148,7 @@ router.put('/:cid', async (req, res) => {
 
         res
         .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: productAdded})
+        .json({ status: 'Success', payload: productAdded})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
@@ -158,7 +165,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
 
         res
         .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: productAdded})
+        .json({ status: 'Success', payload: productAdded})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
@@ -174,7 +181,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 
         res
         .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: productDeleted})
+        .json({ status: 'Success', payload: productDeleted})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
@@ -191,7 +198,7 @@ router.delete('/:cid', async (req, res) => {
         
         res
         .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: productsDeleted})
+        .json({ status: 'Success', payload: productsDeleted})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
