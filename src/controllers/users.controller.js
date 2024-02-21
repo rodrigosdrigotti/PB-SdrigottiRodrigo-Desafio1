@@ -10,7 +10,7 @@ router.post('/', passport.authenticate('register', {session: false}), async (req
     } catch (error) {
         res
         .status(500)
-        .json({ status: 'Success', message: 'Internal Server Error'})
+        .json({ status: 'error', message: 'Internal Server Error'})
     }
 })
 

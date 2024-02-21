@@ -60,7 +60,6 @@ router.get('/:cid', async (req, res) => {
 router.post('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { email } = req.user
-        
         const user = await User.findOne({email: email})
 
         const pid = req.body.productId
@@ -76,7 +75,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
             const newCart = await cartsService.insertOne(newCartInfo)
             user.cart = newCart._id
             
-            const updateUser = await User.updateOne({cart: user.cart})
+            const updateUser = await User.updateOne({email}, {cart: user.cart})
             
             res
             .status(HTTP_RESPONSES.CREATED)
@@ -173,7 +172,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
     }
 })
 //Eliminar del carrito el producto seleccionado.
-router.delete('/:cid/product/:pid', async (req, res) => {
+/* router.delete('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params
 
@@ -187,7 +186,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
     }
-})
+}) */
 
 //Eliminar todos los productos del carrito 
 router.delete('/:cid', async (req, res) => {

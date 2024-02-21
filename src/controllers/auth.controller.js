@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
     const { email, password } = req.body
 
     const user = await User.findOne({ email: email })
+  
     if (!user){
       res.status(400).json({ status: 'error', error: 'Bad Request' })
     }
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ status: 'Success', message: 'Internal Server Error' })
+      .json({ status: 'error', message: 'Internal Server Error' })
   }
 })
 
@@ -55,7 +56,7 @@ router.post('/forgot-password', async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ status: 'Success', message: 'Internal Server Error' })
+      .json({ status: 'error', message: 'Internal Server Error' })
   }
 })
 
