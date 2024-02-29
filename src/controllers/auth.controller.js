@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
       role: user.role,
       cart: user.cart,
     })
-
+    
     res 
       .cookie('authToken', token, {
         maxAge: 60000,

@@ -1,5 +1,5 @@
 const express = require('express')
-const mongoConnect = require('./db')
+const MongoConnect = require('./db')
 const router = require('./router')
 const cookieParser = require('cookie-parser')
 const initializePassport = require('./configs/passport.config')
@@ -27,6 +27,6 @@ app.set('view engine', 'handlebars')
 
 router(app)
 
-mongoConnect()
+MongoConnect.getInstance()
 
 module.exports = app
