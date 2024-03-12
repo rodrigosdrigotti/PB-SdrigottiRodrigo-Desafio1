@@ -1,10 +1,11 @@
 const { Router } = require('express')
 const passportCall = require('../utils/passport-call.util')
 const authorization = require('../middlewares/authorization.middleware')
+const CurrentUserDto = require('../DTO/current-user.dto')
 
 const router = Router()
 
-
+//! SIGNUP
 router.get('/signup', async (req, res) => {
     try {
      res.render ('signup.handlebars', {style:'index.css'})   
@@ -14,6 +15,7 @@ router.get('/signup', async (req, res) => {
     }
 })
 
+//! MUESTRA EL PROFILE DEL USUARIO LOGUEADO
 router.get('/profile', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const user = req.user
@@ -24,6 +26,7 @@ router.get('/profile', passportCall('jwt'), authorization('user'), async (req, r
     }
 })
 
+//! CAMBIO DE CONTRASEÑA OLVIDADA
 router.get('/forgotPassword', async (req, res) => {
     try {
         res.render ('forgot-password.handlebars', { style:'index.css'})   
@@ -33,11 +36,13 @@ router.get('/forgotPassword', async (req, res) => {
     }
 })
 
-router.get('/session/current', passportCall('jwt'), authorization('user'), async (req, res) => {
+//! DEVUELVE UN DTO DEL USUARIO LOGUEADO CON LA INFORMACION NECESARIA
+router.get('/current', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const user = req.user
+        const userCurrent = new CurrentUserDto(user)
 
-        res.json({ status: 'Success', payload: user})
+        res.json({ status: 'Success', payload: userCurrent})
 
     } catch (error) {
         console.error ('Error:', error.message)

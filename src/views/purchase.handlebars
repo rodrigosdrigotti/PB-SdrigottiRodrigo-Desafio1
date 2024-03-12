@@ -1,0 +1,34 @@
+<header class='containerNav'>
+    <nav class='nav'>
+        <ul class='nav_list'>
+            <li class='nav_page'>
+                <a href="/api/products">Products</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/carts">Cart</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/profile">Profile</a>
+            </li>
+        </ul>
+    </nav>
+    <button class='nav-btn'>
+        <FaBars />
+    </button>
+</header>
+
+<h1>Ticket De Compra</h1>
+  
+<div class="container">
+    <div class="cart-container">
+        <div class="purchase-card">
+            <p>Código de Ticket: {{newTicket.code}}</p>
+            <p>Fecha Compra: {{newTicket.purchase_datetime}}</p>
+            <p>Monto Total: ${{newTicket.amount}}</p>
+            <p>Usuario: {{newTicket.purchaser}}</p>
+        </div>
+        <div class='label-text'>
+           <a href="/api/products">Volver a Home</a> 
+        </div>
+    </div>
+</div>

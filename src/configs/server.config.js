@@ -1,3 +1,6 @@
+require('dotenv').config()
+
 module.exports = {
-    port: 8080,
+    port: process.env.PORT || 8080,
+    environment: process.env.ENVIRONMENT,
 }

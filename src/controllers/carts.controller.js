@@ -4,10 +4,14 @@ const cartsService = require('../services/cart.service')
 const passportCall = require('../utils/passport-call.util')
 const authorization = require('../middlewares/authorization.middleware')
 const User = require('../DAO/models/user.model')
+const Ticket = require('../DAO/models/ticket.model')
+const NewTicketDto = require('../DTO/new-ticket.dto')
+const NewProductDto = require('../DTO/new-product.dto')
+const productsService = require('../services/product.service')
 
 const router = Router()
 
-//Devuelve todos los carritos de compras del USUARIO LOGUEADO
+//! DEVUELVE TODOS LOS CARRITOS DE COMPRAS DEL USUARIO LOGUEADO
 router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { email } = req.user
@@ -36,7 +40,7 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
     }
 })
 
-//Devuelve un carrito a traves del CID pasado por parametro
+//! DEVUELVE UN CARRITO A TRAVES DEL CID PASADO POR PARAMS
 router.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
@@ -56,7 +60,7 @@ router.get('/:cid', async (req, res) => {
     }
 })
 
-//Crea un carrito con un array de productos vacio
+//! CREA UN CARRITO CON UN ARRAY DE PRODUCTOS VACIO
 router.post('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { email } = req.user
@@ -96,7 +100,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
     }
 })
 
-//Eliminar del carrito el producto seleccionado por USUARIO.
+//! ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO POR EL USUARIO
 router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { email } = req.user
@@ -117,6 +121,95 @@ router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) 
         .json({  status: 'error', error  })
     }
 })
+
+//! ELIMINAR TODOS LOS PRODUCTOS DEL CARRITO 
+router.delete('/:cid', passportCall('jwt'), authorization('user'), async (req, res) => {
+    try {
+        const { cid } = req.params
+
+        const productsDeleted = await cartsService.deleteAll(cid)
+        
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'Success', payload: productsDeleted})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+//! FINALIZAR EL PROCESO DE COMPRA DEL CARRITO
+router.post('/:cid/purchase', passportCall('jwt'), authorization('user'), async (req, res) => {
+    try {
+        const { cid } = req.params
+
+        const cartId = await cartsService.getOneById(cid)
+
+        if(!cartId) {
+            return res
+                .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+                .json({  status: 'error', error: 'Carrito no Encontrado'  })
+        }
+        
+        const productsNotPurchased = [];
+
+        cartId.map(prod => {
+            const product = prod.product;
+            const quantityInCart = prod.quantity;
+            
+            if(product.stock < quantityInCart){
+                productsNotPurchased.push(prod._id);
+            }
+        })
+
+        //*CREAR TICKETS DE PRODUCTOS CON STOCK Y ACTUALIZAR STOCK DE PRODUCTOS
+        if(productsNotPurchased.length > 0) {
+            const productsPurchased = cartId.filter(item => !productsNotPurchased.includes(item._id))
+
+            const totalAmount = productsPurchased.reduce((total, item) => {
+                return total + (item.product.price * item.quantity);
+            }, 0);
+
+            const newTicketInfo = new NewTicketDto(totalAmount, req.user.email)
+    
+            const newTicket = await Ticket.create(newTicketInfo)
+
+            productsPurchased.map(async(prod) => {
+                const product = prod.product;
+                const quantityInCart = prod.quantity;
+                const updatedAt = new Date()
+                
+                product.stock -= quantityInCart  
+
+                const productInfo = new NewProductDto(product, updatedAt)
+
+                await productsService.updateOne(product._id, productInfo)
+
+            })
+
+            cartId = cartId.filter(item => productsNotPurchased.includes(item._id))
+
+            //await cartsService.updateCart(cid, cartToUpdate)
+            
+            
+            return res
+                .status(HTTP_RESPONSES.CREATED)
+                .json({ status: 'Success', payload: newTicket})
+
+            /* return res.render('purchase.handlebars', { 
+                    newTicket,
+                    style: 'index.css',
+                }) */
+        }
+        
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
 
 
 
@@ -165,39 +258,6 @@ router.put('/:cid/product/:pid', async (req, res) => {
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'Success', payload: productAdded})
-    } catch (error) {
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
-    }
-})
-//Eliminar del carrito el producto seleccionado.
-/* router.delete('/:cid/product/:pid', async (req, res) => {
-    try {
-        const { cid, pid } = req.params
-
-        const productDeleted = await cartsService.deleteOne(cid, pid)
-
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'Success', payload: productDeleted})
-    } catch (error) {
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
-    }
-}) */
-
-//Eliminar todos los productos del carrito 
-router.delete('/:cid', async (req, res) => {
-    try {
-        const { cid } = req.params
-
-        const productsDeleted = await cartsService.deleteAll(cid)
-        
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'Success', payload: productsDeleted})
     } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)

@@ -1,12 +1,14 @@
 const { Router } = require('express')
 const HTTP_RESPONSES = require('../constants/http-responses.constant')
-const User = require('../DAO/models/user.model');
 const Product = require('../DAO/models/product.nodel.js')
 const passportCall = require('../utils/passport-call.util');
 const authorization = require('../middlewares/authorization.middleware')
+const NewProductDto = require('../DTO/new-product.dto')
+const productsService = require('../services/product.service')
 
 const router = Router()
 
+//! DEVUELVE TODOS LOS PRODUCTOS
 router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 10
@@ -50,6 +52,58 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
     }
 })
 
+//! AGREGAR UN PRODUCTO SI SOS ADMIN
+router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) => {
+    try {
+        const newProductInfo = new NewProductDto(req.body)
+        
+        const newProduct = await productsService.insertOne(newProductInfo)
+        
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: newProduct})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
 
+//! ACTUALIZAR UN PRODUCTO SI SOS ADMIN
+router.put('/:pid', passportCall('jwt'), authorization('admin'), async (req, res) => {
+    try {
+        const { pid } = req.params
+        const updatedAt = new Date()
+
+        const productInfo = new NewProductDto(req.body, updatedAt)
+        
+        const productUpdate = await productsService.updateOne(pid, productInfo)
+
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: productUpdate})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+//! BORRAR UN PRODUCTO POR ID SI SOS ADMIN
+router.delete('/:pid', passportCall('jwt'), authorization('admin'), async (req, res) => {
+    try {
+        const { pid } = req.params
+        const newStatus = { status: false }
+        const productDelete = await productsService.deleteOne(pid, newStatus)
+        
+        res
+        .status(HTTP_RESPONSES.CREATED)
+        .json({ status: 'success', payload: productDelete})
+    } catch (error) {
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
 
 module.exports = router

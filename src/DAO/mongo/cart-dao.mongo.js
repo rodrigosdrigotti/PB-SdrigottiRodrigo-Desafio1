@@ -59,6 +59,11 @@ class CartDAO {
         return await Cart.updateOne({_id: cid}, cart)
     }
 
+    async updateCart(cid, cartInfo) {
+
+        return await Cart.updateOne({_id: cid}, cartInfo)
+    }
+
     async deleteProductInCart(cid, pid) {
         const cart = await Cart.findById(cid)  
         cart.products = cart.products.filter(prod => !prod.product.equals(pid))

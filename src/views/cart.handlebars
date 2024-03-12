@@ -4,9 +4,6 @@
             <li class='nav_page'>
                 <a href="/api/products">Products</a>
             </li>
-            {{!-- <li class='nav_page'>
-                <a href="/api/carts/65ad98aa813faafe418d2fde">Cart</a>
-            </li> --}}
             <li class='nav_page'>
                 <a href="/api/carts">Cart</a>
             </li>
@@ -27,6 +24,7 @@
 <div class="container">
     <div class="cart-container">
     {{#if cartId}}
+    <p>{{cartId.quantity}}</p>
     {{#each cartId}}
         <div class="cart-card">
             <div class="info-card">
@@ -53,6 +51,11 @@
             </div>
         </div>
     {{/each}}
+    </div>
+    <h3>Total del carrito: </h3>
+    <div>
+        <a href="/api/carts/{{userCartId}}/purchase"><button class='loginButton'>Comprar</button></a>
+    </div>
     {{else}}
     <div class="cart-card">
         <div class="info-text">
@@ -60,8 +63,6 @@
         </div>
     </div>
     {{/if}}
-    </div>
-    <h3>Total del carrito: </h3>
 </div>
 
 <script src="/js/cart.js"></script>

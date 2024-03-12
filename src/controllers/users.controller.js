@@ -3,6 +3,7 @@ const passport = require('passport')
 
 const router = Router()
 
+//! REGISTRO DE USUARIO
 router.post('/', passport.authenticate('register', {session: false}), async (req, res) => {
     try {
         res.status(201).json({ status: 'Success', message: `Registered Succesful` })
@@ -14,6 +15,7 @@ router.post('/', passport.authenticate('register', {session: false}), async (req
     }
 })
 
+//! FALLO DE REGISTRO DE USUARIO
 router.get('/fail-register', (req, res) => {
     try {
         console.log('Fallo Registro')

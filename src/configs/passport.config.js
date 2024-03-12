@@ -5,8 +5,10 @@ const GithubStrategy = require('passport-github2')
 const User = require('../DAO/models/user.model')
 const cookieExtractor = require('../utils/cookie-extractor.util')
 const { jwtSecret } = require('../configs/index')
-const { createHash } = require('../utils/crypt-password.util')
 const { ghClientID, ghClientSecret } = require('.')
+const NewUserDto = require('../DTO/new-user.dto')
+const userService = require('../services/users.service')
+
 
 const JWTStrategy = jwt.Strategy
 const LocalStrategy = local.Strategy
@@ -29,22 +31,15 @@ const initializePassport = () => {
         
         async(req, username, password, done) => {
             try {
-                const { first_name, last_name, email } = req.body
                 const user = await User.findOne({email: username})
                 if(user){
                     console.log('User Exists')
                     return done(null, false)
                 }
                 
-                const newUserInfo = {
-                    first_name, 
-                    last_name, 
-                    email, 
-                    password: createHash(password)
-                }
-    
-                const newUser = await User.create(newUserInfo)
-    
+                const newUserInfo = new NewUserDto(req.body)
+                const newUser = await userService.create(newUserInfo)
+                
                 return done(null, newUser)
 
             } catch (error) {

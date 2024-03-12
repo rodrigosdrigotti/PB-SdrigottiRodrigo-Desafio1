@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const router = Router()
 
+//! LOGIN DE USUARIO Y GENERACION DEL TOKEN
 router.post('/', async (req, res) => {
   try {       
     const { email, password } = req.body
@@ -42,6 +43,7 @@ router.post('/', async (req, res) => {
   }
 })
 
+//! CAMBIO DE CONTRASEÑA OLVIDADA
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email, password } = req.body
@@ -60,6 +62,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 })
 
+//! LOGOUT DE USUARIO
 router.get('/logout', (req, res) => {
   res
     .clearCookie('authToken')
@@ -67,6 +70,7 @@ router.get('/logout', (req, res) => {
     .json({ status: 'Success', payload: 'Logout Succesful'})
 })
 
+//! LOGIN CON GITHUB
 router.get('/github', passport.authenticate('github', {scope: ['user: email']}), (req, res) => {})
 
 router.get('/githubcallback', passport.authenticate('github', {session: false}), 
