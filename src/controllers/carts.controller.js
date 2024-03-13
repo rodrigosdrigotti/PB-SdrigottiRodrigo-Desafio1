@@ -4,10 +4,7 @@ const cartsService = require('../services/cart.service')
 const passportCall = require('../utils/passport-call.util')
 const authorization = require('../middlewares/authorization.middleware')
 const User = require('../DAO/models/user.model')
-const Ticket = require('../DAO/models/ticket.model')
-const NewTicketDto = require('../DTO/new-ticket.dto')
-const NewProductDto = require('../DTO/new-product.dto')
-const productsService = require('../services/product.service')
+const ticketService = require('../services/ticket.service')
 
 const router = Router()
 
@@ -67,7 +64,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
         const user = await User.findOne({email: email})
 
         const pid = req.body.productId
-        const quantity = req.body.quantity || 1
+        const quantity = parseInt(req.body.quantity)
         
         if(!user.cart) {
             const newCartInfo = {
@@ -86,7 +83,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
             .json({ status: 'Success', payload: {newCart, updateUser}})
         }
         else {
-            const productAdded = await cartsService.insertInsideOne(user.cart, pid)
+            const productAdded = await cartsService.insertInsideOne(user.cart, pid, quantity)
             
             res
             .status(HTTP_RESPONSES.CREATED)
@@ -140,11 +137,11 @@ router.delete('/:cid', passportCall('jwt'), authorization('user'), async (req, r
 })
 
 //! FINALIZAR EL PROCESO DE COMPRA DEL CARRITO
-router.post('/:cid/purchase', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.get('/:cid/purchase', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { cid } = req.params
 
-        const cartId = await cartsService.getOneById(cid)
+        let cartId = await cartsService.getOneById(cid)
 
         if(!cartId) {
             return res
@@ -152,56 +149,18 @@ router.post('/:cid/purchase', passportCall('jwt'), authorization('user'), async 
                 .json({  status: 'error', error: 'Carrito no Encontrado'  })
         }
         
-        const productsNotPurchased = [];
+        const { newTicket, cartToUpdate } = await ticketService.purchase(cartId, cid, req.user.email)
+        
+        /* return res
+            .status(HTTP_RESPONSES.CREATED)
+            .json({ status: 'Success', payload: newTicket}) */
 
-        cartId.map(prod => {
-            const product = prod.product;
-            const quantityInCart = prod.quantity;
-            
-            if(product.stock < quantityInCart){
-                productsNotPurchased.push(prod._id);
-            }
+        return res.render('purchase.handlebars', { 
+                newTicket,
+                cartToUpdate,
+                style: 'index.css',
         })
-
-        //*CREAR TICKETS DE PRODUCTOS CON STOCK Y ACTUALIZAR STOCK DE PRODUCTOS
-        if(productsNotPurchased.length > 0) {
-            const productsPurchased = cartId.filter(item => !productsNotPurchased.includes(item._id))
-
-            const totalAmount = productsPurchased.reduce((total, item) => {
-                return total + (item.product.price * item.quantity);
-            }, 0);
-
-            const newTicketInfo = new NewTicketDto(totalAmount, req.user.email)
-    
-            const newTicket = await Ticket.create(newTicketInfo)
-
-            productsPurchased.map(async(prod) => {
-                const product = prod.product;
-                const quantityInCart = prod.quantity;
-                const updatedAt = new Date()
-                
-                product.stock -= quantityInCart  
-
-                const productInfo = new NewProductDto(product, updatedAt)
-
-                await productsService.updateOne(product._id, productInfo)
-
-            })
-
-            cartId = cartId.filter(item => productsNotPurchased.includes(item._id))
-
-            //await cartsService.updateCart(cid, cartToUpdate)
-            
-            
-            return res
-                .status(HTTP_RESPONSES.CREATED)
-                .json({ status: 'Success', payload: newTicket})
-
-            /* return res.render('purchase.handlebars', { 
-                    newTicket,
-                    style: 'index.css',
-                }) */
-        }
+        
         
     } catch (error) {
         res
@@ -209,6 +168,9 @@ router.post('/:cid/purchase', passportCall('jwt'), authorization('user'), async 
         .json({  status: 'error', error  })
     }
 })
+
+
+
 
 
 

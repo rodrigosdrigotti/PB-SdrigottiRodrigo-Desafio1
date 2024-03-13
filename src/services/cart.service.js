@@ -35,9 +35,9 @@ const insertOne = async newCartInfo => {
     }
 } 
 
-const insertInsideOne = async (cid, pid) => {
+const insertInsideOne = async (cid, pid, quantity) => {
     try {
-        const productAddedToCart = await Cart.newProductAddedToCart(cid, pid)
+        const productAddedToCart = await Cart.newProductAddedToCart(cid, pid, quantity)
 
         return productAddedToCart
     } catch (error) {
@@ -68,7 +68,7 @@ const updateOne = async (cid, pid, quantity) => {
 const updateCart = async (cid, cartInfo) => {
     try {
         const cartUpdate = await Cart.updateCart(cid, cartInfo)
-
+        
         return cartUpdate
     } catch (error) {
         throw error

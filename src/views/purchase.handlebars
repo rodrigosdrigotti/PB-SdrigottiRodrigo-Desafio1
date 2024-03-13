@@ -22,12 +22,49 @@
 <div class="container">
     <div class="cart-container">
         <div class="purchase-card">
-            <p>Código de Ticket: {{newTicket.code}}</p>
-            <p>Fecha Compra: {{newTicket.purchase_datetime}}</p>
-            <p>Monto Total: ${{newTicket.amount}}</p>
-            <p>Usuario: {{newTicket.purchaser}}</p>
+            <div class="purchase-info">
+                <p class="purchase-info-title">Código de Ticket: </p>
+                <p class="purchase-info-text">{{newTicket.code}}</p>
+            </div>
+            <div class="purchase-info">
+                <p class="purchase-info-title">Fecha Compra: </p>
+                <p class="purchase-info-text">{{newTicket.purchase_datetime}}</p>
+            </div>
+            <div class="purchase-info">
+                <p class="purchase-info-title">Monto Total: </p>
+                <p class="purchase-info-text">${{newTicket.amount}}</p>
+            </div>
+            <div class="purchase-info">
+                <p class="purchase-info-title">Usuario: </p>
+                <p class="purchase-info-text">{{newTicket.purchaser}}</p>
+            </div>
         </div>
-        <div class='label-text'>
+        {{#if cartToUpdate}}
+        {{#each cartToUpdate}}
+            <h4>------ PRODUCTOS SIN STOCK ------</h4>
+            <div class="cart-card">
+                <div class="info-card">
+                    <div class="img">
+                        <img src="{{this.product.thumbnail}}">
+                    </div>
+                </div>
+                <div class="info-text">
+                    <p class="info-text-title">{{this.product.title}}</p>
+                    <div class="info-text-price">
+                        <p>Price: ${{this.product.price}}</p>
+                        <p>Stock: {{this.product.stock}}</p>
+                    </div>
+                </div>
+                <div class="info-total">
+                    <p>Cant: {{this.quantity}}</p>
+                    <p>P/Uni.: {{this.product.price}}</p>
+                    <p>Total: </p>
+                </div>
+
+            </div>
+        {{/each}}
+        {{/if}}
+        <div class='purchase-link-home'>
            <a href="/api/products">Volver a Home</a> 
         </div>
     </div>

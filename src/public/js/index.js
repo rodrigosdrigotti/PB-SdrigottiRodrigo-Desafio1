@@ -33,7 +33,9 @@ const test = document.addEventListener('DOMContentLoaded', function () {
 }) 
 
 function addToCart(productId) {
-    const quantity = 1;  // Puedes ajustar la cantidad según tus necesidades
+    const quantityInput = document.getElementById("quantity_" + productId);
+    const quantity = quantityInput.value;
+    //const quantity = 1;  // Puedes ajustar la cantidad según tus necesidades
 
     // Realizar la solicitud POST a la API
     fetch(`/api/carts`, {

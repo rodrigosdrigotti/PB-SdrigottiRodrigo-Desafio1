@@ -41,11 +41,11 @@
                     <p>CODE: {{productFound.code}}</p>
                     <div class="info-price">
                         <p>PRICE: ${{productFound.price}}</p>
+                        <input class="input-quantity" type="number" id="quantity_{{productFound._id}}" value="1" min="1" max="20">    
                         <p>STOCK: {{productFound.stock}}</p>
                     </div>
                 </div>
                 <button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button>
-                {{!-- <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button></a> --}}
             </div>
         </div>
         {{else}}
@@ -63,11 +63,11 @@
                 <p>CODE: {{this.code}}</p>
                 <div class="info-price">
                     <p>PRICE: ${{this.price}}</p>
+                    <input class="input-quantity" type="number" id="quantity_{{this._id}}" value="1" min="1" max="10">    
                     <p>STOCK: {{this.stock}}</p>
                 </div>
             </div>
             <button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button>
-            {{!-- <a href="/api/carts/65ad98aa813faafe418d2fde"><button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button></a> --}}
         </div>
         {{/each}}
         {{/if}}

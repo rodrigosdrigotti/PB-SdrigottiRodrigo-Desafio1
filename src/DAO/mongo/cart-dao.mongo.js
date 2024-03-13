@@ -13,17 +13,17 @@ class CartDAO {
         return await Cart.create(newCartInfo)
     }
 
-    async newProductAddedToCart(cid, pid) {
+    async newProductAddedToCart(cid, pid, quantity) {
         const cart = await Cart.findById(cid)    
         const existingProductIndex = cart.products.findIndex(prod => prod.product.equals(pid))
         
         if(existingProductIndex !== -1 ){
-            cart.products[existingProductIndex].quantity += 1
+            cart.products[existingProductIndex].quantity += quantity
             return await Cart.updateOne({_id: cid}, cart)
         } else {
             cart.products.push({
                 product: pid,
-                quantity: 1
+                quantity: quantity
             })
             return await Cart.updateOne({_id: cid}, cart)
         }
@@ -60,8 +60,8 @@ class CartDAO {
     }
 
     async updateCart(cid, cartInfo) {
-
-        return await Cart.updateOne({_id: cid}, cartInfo)
+        
+        return await Cart.updateOne({_id: cid}, {products: cartInfo})
     }
 
     async deleteProductInCart(cid, pid) {

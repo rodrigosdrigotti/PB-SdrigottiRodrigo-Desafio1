@@ -3,6 +3,7 @@ const cartsController = require('../controllers/carts.controller')
 const authController = require('../controllers/auth.controller')
 const viewsTemplateController = require('../controllers/views-template.controller')
 const usersController = require('../controllers/users.controller')
+const chatsController = require('../controllers/chats.controller')
 
 const router = app => {
     app.use('/api/', viewsTemplateController)
@@ -10,6 +11,7 @@ const router = app => {
     app.use('/api/users', usersController)
     app.use('/api/products', productsController)
     app.use('/api/carts', cartsController)
+    app.use('/api/chat', chatsController)
 }
 
 module.exports = router

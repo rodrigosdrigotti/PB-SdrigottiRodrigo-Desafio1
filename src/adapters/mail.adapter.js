@@ -1,7 +1,7 @@
-const { email } = require('../../configs/services.config')
-const transport = require('../../utils/nodemailer.util')
+const { email } = require('../configs/services.config')
+const transport = require('../utils/nodemailer.util')
 
-class MailDAO {
+class MailAdapter {
   async sendMessage(messageInfo) {
     await transport.sendMail({
       from: email.identifier,
@@ -26,4 +26,4 @@ class MailDAO {
   }
 }
 
-module.exports = MailDAO
+module.exports = MailAdapter
