@@ -61,10 +61,10 @@ router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) =
     try {
         const { title, description, code, price, stock, category } = req.body
         
-        if( !title || !description || !code || !price || !stock || !category) {
+        if( !title || !description || !code || !price || !stock || !category ) {
             CustomError.createError({
                 name: TYPES_ERROR.PRODUCT_CREATION_ERROR,
-                cause: generateProductErrorInfo( title, description, code, price, stock, category ),
+                cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
                 message: 'Error Creating A Product',
                 code: ErrorCodes.INVALID_PRODUCT_INFO,
             })
@@ -79,6 +79,9 @@ router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) =
         .json({ status: 'success', payload: newProduct})
     } catch (error) {
         console.log(error.cause)
+        res
+        .status(error.code)
+        .json({  status: 'error', error: error.message  })
     }
 })
 
