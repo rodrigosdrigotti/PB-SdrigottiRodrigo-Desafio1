@@ -4,7 +4,7 @@ form.addEventListener('submit', e => {
     e.preventDefault()
 
     const data = new FormData(form)
-    console.log(data)
+    
     const obj = {}
 
     data.forEach((value, key) => (obj[key] = value))
@@ -32,15 +32,13 @@ form.addEventListener('submit', e => {
             })
             //* Limpiar los campos del formulario
             form.reset();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `${responseData.error}`,
+            });
         }
     })
-    //.catch(error => console.log(error.message))
-    .catch(error => {
-        console.log("Cambio de Contraseña fallida")
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: `${error.cause}`,
-        });
-    })
+    .catch(error => console.log(error))
 })

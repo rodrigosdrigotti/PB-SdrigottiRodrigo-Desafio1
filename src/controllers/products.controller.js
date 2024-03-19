@@ -57,7 +57,7 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
 })
 
 //! AGREGAR UN PRODUCTO SI SOS ADMIN CON POST
-router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) => {
+router.post('/', passportCall('jwt'), authorization('admin'), async (req, res, next) => {
     try {
         const { title, description, code, price, stock, category } = req.body
         
@@ -78,10 +78,8 @@ router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) =
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: newProduct})
     } catch (error) {
-        console.log(error.cause)
-        res
-        .status(error.code)
-        .json({  status: 'error', error: error.message  })
+
+        next(error);
     }
 })
 

@@ -57,7 +57,7 @@ router.get('/:cid', async (req, res) => {
     }
 })
 
-//! CREA UN CARRITO CON UN ARRAY DE PRODUCTOS VACIO
+//! CREA UN CARRITO CON UN ARRAY DE PRODUCTOS VACIO SINO SUMA CANTIDAD
 router.post('/', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
         const { email } = req.user

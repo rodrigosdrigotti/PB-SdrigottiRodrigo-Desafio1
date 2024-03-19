@@ -32,7 +32,7 @@ app.use(compression({
 
 router(app)
 
-//app.use(errorMiddleware)
+app.use(errorMiddleware)
 
 MongoConnect.getInstance()
 
