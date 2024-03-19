@@ -5,6 +5,10 @@ const passportCall = require('../utils/passport-call.util');
 const authorization = require('../middlewares/authorization.middleware')
 const NewProductDto = require('../DTO/new-product.dto')
 const productsService = require('../services/product.service')
+const CustomError = require('../handlers/errors/Custom-Error.js')
+const ErrorCodes = require('../handlers/errors/enum-errors')
+const generateProductErrorInfo = require('../handlers/errors/generate-product-error-info')
+const TYPES_ERROR = require('../handlers/errors/types.errors')
 
 const router = Router()
 
@@ -52,20 +56,29 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
     }
 })
 
-//! AGREGAR UN PRODUCTO SI SOS ADMIN
+//! AGREGAR UN PRODUCTO SI SOS ADMIN CON POST
 router.post('/', passportCall('jwt'), authorization('admin'), async (req, res) => {
     try {
+        const { title, description, code, price, stock, category } = req.body
+        
+        if( !title || !description || !code || !price || !stock || !category) {
+            CustomError.createError({
+                name: TYPES_ERROR.PRODUCT_CREATION_ERROR,
+                cause: generateProductErrorInfo( title, description, code, price, stock, category ),
+                message: 'Error Creating A Product',
+                code: ErrorCodes.INVALID_PRODUCT_INFO,
+            })
+        }
+    
         const newProductInfo = new NewProductDto(req.body)
         
         const newProduct = await productsService.insertOne(newProductInfo)
-        
+            
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: newProduct})
     } catch (error) {
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
+        console.log(error.cause)
     }
 })
 

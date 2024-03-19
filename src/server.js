@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser')
 const initializePassport = require('./configs/passport.config')
 const passport = require('passport')
 const handlebars = require('express-handlebars')
+const compression = require('express-compression')
+const errorMiddleware = require('./middlewares/errors/index')
 
 const app = express()
 
@@ -24,8 +26,13 @@ app.engine('handlebars', handlebars.engine({
 }))
 app.set('views', process.cwd() + '/src/views')
 app.set('view engine', 'handlebars')
+app.use(compression({
+  brotli: {enabled: true, zlib: {}}
+}))
 
 router(app)
+
+app.use(errorMiddleware)
 
 MongoConnect.getInstance()
 
