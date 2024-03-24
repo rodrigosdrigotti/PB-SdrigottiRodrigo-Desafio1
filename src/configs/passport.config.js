@@ -22,6 +22,7 @@ const initializePassport = () => {
         try {
             done(null, jwt_payload)
         } catch (error) {
+            req.logger.error('Error:', error)
             done(error)
         }
     }))
@@ -33,7 +34,7 @@ const initializePassport = () => {
             try {
                 const user = await User.findOne({email: username})
                 if(user){
-                    console.log('User Exists')
+                    req.logger.error('Error: User Exists')
                     return done(null, false)
                 }
                 
@@ -43,6 +44,7 @@ const initializePassport = () => {
                 return done(null, newUser)
 
             } catch (error) {
+                req.logger.error('Error:', error)
                 return done(error)
             }
         }
@@ -73,7 +75,7 @@ const initializePassport = () => {
             return done(null, user)
 
         } catch (error) {
-            console.log(error)
+            req.logger.error('Error:', error)
             done(error)
         }
     }

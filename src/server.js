@@ -1,5 +1,6 @@
 const express = require('express')
 const MongoConnect = require('./db')
+const logger = require('./middlewares/logger/logger.middleware')
 const router = require('./router')
 const cookieParser = require('cookie-parser')
 const initializePassport = require('./configs/passport.config')
@@ -10,6 +11,7 @@ const errorMiddleware = require('./middlewares/errors/index')
 
 const app = express()
 
+app.use(logger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(process.cwd() + '/src/public'))
@@ -19,16 +21,17 @@ initializePassport()
 app.use(passport.initialize())
 
 app.engine('handlebars', handlebars.engine({
-    runtimeOptions: {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true,
-    },
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
 }))
 app.set('views', process.cwd() + '/src/views')
 app.set('view engine', 'handlebars')
 app.use(compression({
   brotli: {enabled: true, zlib: {}}
 }))
+
 
 router(app)
 

@@ -29,6 +29,7 @@ router.post('/', async (req, res) => {
       cart: user.cart,
     })
     
+    req.logger.info('Success Logged In')
     res 
       .cookie('authToken', token, {
         maxAge: 60000,
@@ -37,6 +38,7 @@ router.post('/', async (req, res) => {
       .json({ status: 'Success', payload: 'Logged In'})
   
   } catch (error) {
+    req.logger.error('Error:', error)
     res
       .status(500)
       .json({ status: 'error', message: 'Internal Server Error' })
@@ -56,6 +58,7 @@ router.post('/forgot-password', async (req, res) => {
     res.json({ status: 'Success', message: 'Password Updated'})
 
   } catch (error) {
+    req.logger.error('Error:', error)
     res
       .status(500)
       .json({ status: 'error', message: 'Internal Server Error' })
@@ -64,6 +67,7 @@ router.post('/forgot-password', async (req, res) => {
 
 //! LOGOUT DE USUARIO
 router.get('/logout', (req, res) => {
+  req.logger.info('Logout Succesful')
   res
     .clearCookie('authToken')
     .status(200)
@@ -84,6 +88,7 @@ router.get('/githubcallback', passport.authenticate('github', {session: false}),
       cart: req.user.cart,
     })
 
+    req.logger.info('Login Succesful')
     res 
       .cookie('authToken', token, {
         maxAge: 60000,

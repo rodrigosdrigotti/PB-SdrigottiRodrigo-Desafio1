@@ -50,6 +50,7 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
         //res.json({ status: 'success', payload: products})
 
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -77,8 +78,9 @@ router.post('/', passportCall('jwt'), authorization('admin'), async (req, res, n
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: newProduct})
-    } catch (error) {
 
+    } catch (error) {
+        req.logger.error('Error:', error)
         next(error);
     }
 })
@@ -96,7 +98,9 @@ router.put('/:pid', passportCall('jwt'), authorization('admin'), async (req, res
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: productUpdate})
+
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -113,7 +117,9 @@ router.delete('/:pid', passportCall('jwt'), authorization('admin'), async (req, 
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: productDelete})
+        
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })

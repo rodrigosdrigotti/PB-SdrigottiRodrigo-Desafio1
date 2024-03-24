@@ -12,7 +12,7 @@ router.get('/signup', async (req, res) => {
     try {
      res.render ('signup.handlebars', {style:'index.css'})   
     } catch (error) {
-        console.error ('Error:', error.message)
+        req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
@@ -23,7 +23,7 @@ router.get('/profile', passportCall('jwt'), authorization('user'), async (req, r
         const user = req.user
         res.render ('profile.handlebars', { user , style:'index.css'})   
     } catch (error) {
-        console.error ('Error:', error.message)
+        req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
@@ -33,7 +33,7 @@ router.get('/forgotPassword', async (req, res) => {
     try {
         res.render ('forgot-password.handlebars', { style:'index.css'})   
     } catch (error) {
-        console.error ('Error:', error.message)
+        req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
@@ -47,7 +47,7 @@ router.get('/current', passportCall('jwt'), authorization('user'), async (req, r
         res.json({ status: 'Success', payload: userCurrent})
 
     } catch (error) {
-        console.error ('Error:', error.message)
+        req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
@@ -58,7 +58,7 @@ router.get('/addProduct', passportCall('jwt'), authorization('admin'), async (re
         res.render ('add-product.handlebars', { style: 'index.css' })
 
     } catch (error) {
-        console.error ('Error:', error.message)
+        req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
@@ -82,6 +82,27 @@ router.get('/mockingProducts', passportCall('jwt'), authorization('admin'), asyn
         }
 
     } catch (error) {
+        req.logger.error('Error:', error)
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+//! PERMITE PROBAR TODOS LOS LOGS
+router.get('/loggerTest', passportCall('jwt'), authorization('user'), (req, res) => {
+    try {
+        req.logger.debug('Debug message')
+        req.logger.http('HTTP message')
+        req.logger.info('Info message')
+        req.logger.warning('Warning message')
+        req.logger.error('Error message')
+        req.logger.fatal('Fatal message')
+        
+        res.json({ status: 'sucess', message: 'Logs registrados correctamente. Ver consola' });
+
+    } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })

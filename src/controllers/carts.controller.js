@@ -31,6 +31,7 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
         }
 
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -51,6 +52,7 @@ router.get('/:cid', async (req, res) => {
 
         //res.json({ status: 'success', payload: cartId})
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error: 'Carrito no Encontrado'  })
@@ -91,6 +93,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
         }
         
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -112,7 +115,9 @@ router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) 
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'Success', payload: productDeleted})
+
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -129,7 +134,9 @@ router.delete('/:cid', passportCall('jwt'), authorization('user'), async (req, r
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'Success', payload: productsDeleted})
+
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
@@ -163,6 +170,7 @@ router.get('/:cid/purchase', passportCall('jwt'), authorization('user'), async (
         
         
     } catch (error) {
+        req.logger.error('Error:', error)
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
