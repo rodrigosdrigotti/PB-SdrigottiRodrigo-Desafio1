@@ -8,7 +8,7 @@ const { jwtSecret } = require('../configs/index')
 const { ghClientID, ghClientSecret } = require('.')
 const NewUserDto = require('../DTO/new-user.dto')
 const userService = require('../services/users.service')
-
+//const winstonLogger = require('../utils/winston/factory')
 
 const JWTStrategy = jwt.Strategy
 const LocalStrategy = local.Strategy
@@ -20,9 +20,9 @@ const initializePassport = () => {
         secretOrKey: jwtSecret,
     }, (jwt_payload, done) => {
         try {
+            throw new Error("Error de prueba en passport");
             done(null, jwt_payload)
         } catch (error) {
-            req.logger.error('Error:', error)
             done(error)
         }
     }))
