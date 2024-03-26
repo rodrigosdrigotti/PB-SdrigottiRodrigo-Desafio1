@@ -90,7 +90,7 @@ router.get('/mockingProducts', passportCall('jwt'), authorization('admin'), asyn
 })
 
 //! PERMITE PROBAR TODOS LOS LOGS
-router.get('/loggerTest', /* passportCall('jwt'), authorization('user'), */ (req, res) => {
+router.get('/loggerTest', passportCall('jwt'), authorization('user'), (req, res) => {
     try {
         req.logger.debug('Debug message')
         req.logger.http('HTTP message')
