@@ -20,7 +20,6 @@ const initializePassport = () => {
         secretOrKey: jwtSecret,
     }, (jwt_payload, done) => {
         try {
-            throw new Error("Error de prueba en passport");
             done(null, jwt_payload)
         } catch (error) {
             done(error)
