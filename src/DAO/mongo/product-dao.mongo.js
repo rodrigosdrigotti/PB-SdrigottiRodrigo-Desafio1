@@ -11,11 +11,11 @@ class ProductDAO {
     }
 
     async allProducts() {
-        return await Product.find({status: true})
+        return await Product.find({status: true}, {__v: 0})
     }
 
     async oneProductById(pid) {
-        return await Product.findById(pid)
+        return await Product.findById(pid, {__v: 0})
     }
 
     async newProduct(newProductInfo) {

@@ -1,0 +1,85 @@
+<header class='containerNav'>
+    <nav class='nav'>
+        <ul class='nav_list'>
+            <li class='nav_page'>
+                <a href="/api/products">Products</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/carts">Cart</a>
+            </li>
+            <li class='nav_page'>
+                <a href="/api/profile">Profile</a>
+            </li>
+        </ul>
+        <div class='nav-icons'>
+            <p>BIENVENIDO/A:</p>
+            <p class="nameUser">{{user.first_name}}</p>
+            <p class="nameUser">Role: {{user.role}}</p>
+        </div>
+    </nav>
+    <button class='nav-btn'>
+        <FaBars />
+    </button>
+</header>
+
+<h2>Products</h2>
+
+<div class="containerP">
+    <div class="products-container">
+        {{#if productFound}}
+        <div class="container">
+            <div class="productCard">
+                <div class="info">
+                    <p class="product-title">{{productFound.title}}</p>
+                    <div class="images">
+                        <div class="img">
+                            <img src="{{productFound.thumbnail}}">
+                        </div>
+                    </div>
+                    <p>{{productFound.category}}</p>
+                    <p>{{productFound.description}}</p>
+                    <p>CODE: {{productFound.code}}</p>
+                    <div class="info-price">
+                        <p>PRICE: ${{productFound.price}}</p>
+                        <input class="input-quantity" type="number" id="quantity_{{productFound._id}}" value="1" min="1" max="20">    
+                        <p>STOCK: {{productFound.stock}}</p>
+                    </div>
+                </div>
+                <button class="button" onclick="addToCart('{{ productFound._id }}')">Add to Cart</button>
+            </div>
+        </div>
+        {{else}}
+        {{#each products}}
+        <div class="productCard">
+            <div class="info">
+                <p class="product-title">{{this.title}}</p>
+                <div class="images">
+                    <div class="img">
+                        <img src="{{this.thumbnail}}">
+                    </div>
+                </div>
+                <p>{{this.category}}</p>
+                <p>{{this.description}}</p>
+                <p>CODE: {{this.code}}</p>
+                <div class="info-price">
+                    <p>PRICE: ${{this.price}}</p>
+                    <input class="input-quantity" type="number" id="quantity_{{this._id}}" value="1" min="1" max="10">    
+                    <p>STOCK: {{this.stock}}</p>
+                </div>
+            </div>
+            <button class="button" onclick="addToCart('{{ this._id }}')">Add to Cart</button>
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}"><button class="button">Prev</button></a>
+    {{/if}}
+
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}"><button class="button">Next</button></a>
+    {{/if}}
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/index.js"></script>

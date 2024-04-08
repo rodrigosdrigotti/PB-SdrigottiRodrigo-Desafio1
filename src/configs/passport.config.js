@@ -8,7 +8,6 @@ const { jwtSecret } = require('../configs/index')
 const { ghClientID, ghClientSecret } = require('.')
 const NewUserDto = require('../DTO/new-user.dto')
 const userService = require('../services/users.service')
-//const winstonLogger = require('../utils/winston/factory')
 
 const JWTStrategy = jwt.Strategy
 const LocalStrategy = local.Strategy

@@ -4,6 +4,9 @@ const authorization = require('../middlewares/authorization.middleware')
 const CurrentUserDto = require('../DTO/current-user.dto')
 const generateProducts = require('../utils/products-mock.util')
 const productsService = require('../services/product.service')
+const { authToken } = require('../utils/jwt.util')
+const jwt = require('jsonwebtoken')
+const { jwtSecret } = require('../configs/index')
 
 const router = Router()
 
@@ -38,6 +41,27 @@ router.get('/forgotPassword', async (req, res) => {
     }
 })
 
+//! RESETEO DE CONTRASEÑA OLVIDADA
+router.get('/reset-password/:token', async (req, res) => {
+    try {
+        const { token } = req.params
+    
+        jwt.verify(token, jwtSecret, (error, credentials) => {
+        
+            if (error) return res.status(403).json({ error: 'Unauthorized' })
+
+            const expirationTime = new Date(credentials.exp * 1000)
+            
+            const timeLeft = Math.floor((expirationTime - new Date()) / 1000)
+
+            res.render ('reset-password.handlebars', { token, timeLeft, style:'index.css' })   
+        })
+    } catch (error) {
+        req.logger.error('Error:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
 //! DEVUELVE UN DTO DEL USUARIO LOGUEADO CON LA INFORMACION NECESARIA
 router.get('/current', passportCall('jwt'), authorization('user'), async (req, res) => {
     try {
@@ -53,7 +77,7 @@ router.get('/current', passportCall('jwt'), authorization('user'), async (req, r
 })
 
 //! AGREGAR NUEVOS PRODUCTOS
-router.get('/addProduct', passportCall('jwt'), authorization('admin'), async (req, res) => {
+router.get('/addProduct', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         res.render ('add-product.handlebars', { style: 'index.css' })
 

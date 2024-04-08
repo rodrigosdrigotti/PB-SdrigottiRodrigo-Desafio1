@@ -8,12 +8,13 @@ const productsService = require('../services/product.service')
 const CustomError = require('../handlers/errors/Custom-Error.js')
 const ErrorCodes = require('../handlers/errors/enum-errors')
 const generateProductErrorInfo = require('../handlers/errors/generate-product-error-info')
-const TYPES_ERROR = require('../handlers/errors/types.errors')
+const TYPES_ERROR = require('../handlers/errors/types.errors');
+const checkProductOwnership = require('../middlewares/checkProductOwnership.middleware.js');
 
 const router = Router()
 
 //! DEVUELVE TODOS LOS PRODUCTOS
-router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.get('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 10
         const page = Number(req.query.page) || 1
@@ -58,26 +59,41 @@ router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => 
 })
 
 //! AGREGAR UN PRODUCTO SI SOS ADMIN CON POST
-router.post('/', passportCall('jwt'), authorization('admin'), async (req, res, next) => {
+router.post('/', passportCall('jwt'), authorization('premium'), async (req, res, next) => {
     try {
         const { title, description, code, price, stock, category } = req.body
+        let { owner } = req.body
+
+        if(owner === 'si') {
+
+            owner = req.user.email
+
+            if( !title || !description || !code || !price || !stock || !category || !owner ) {
+                CustomError.createError({
+                    name: TYPES_ERROR.PRODUCT_CREATION_ERROR,
+                    cause: generateProductErrorInfo({ title, description, code, price, stock, category, owner }),
+                    message: 'Error Creating A Product',
+                    code: ErrorCodes.INVALID_PRODUCT_INFO,
+                })
+            }
         
-        if( !title || !description || !code || !price || !stock || !category ) {
-            CustomError.createError({
-                name: TYPES_ERROR.PRODUCT_CREATION_ERROR,
-                cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
-                message: 'Error Creating A Product',
-                code: ErrorCodes.INVALID_PRODUCT_INFO,
-            })
-        }
-    
-        const newProductInfo = new NewProductDto(req.body)
-        
-        const newProduct = await productsService.insertOne(newProductInfo)
+            const newProductInfo = new NewProductDto({title, description, code, price, stock, category, owner})
             
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'success', payload: newProduct})
+            const newProduct = await productsService.insertOne(newProductInfo)
+                
+            res
+            .status(HTTP_RESPONSES.CREATED)
+            .json({ status: 'success', payload: newProduct})
+        }
+        else if(owner === 'no'){
+            const newProductInfo = new NewProductDto({title, description, code, price, stock, category})
+            
+            const newProduct = await productsService.insertOne(newProductInfo)
+                
+            res
+            .status(HTTP_RESPONSES.CREATED)
+            .json({ status: 'success', payload: newProduct})
+        }
 
     } catch (error) {
         req.logger.error('Error:', error)
@@ -86,7 +102,7 @@ router.post('/', passportCall('jwt'), authorization('admin'), async (req, res, n
 })
 
 //! ACTUALIZAR UN PRODUCTO SI SOS ADMIN
-router.put('/:pid', passportCall('jwt'), authorization('admin'), async (req, res) => {
+router.put('/:pid', passportCall('jwt'), checkProductOwnership/* authorization('admin') */, async (req, res) => {
     try {
         const { pid } = req.params
         const updatedAt = new Date()
@@ -108,7 +124,7 @@ router.put('/:pid', passportCall('jwt'), authorization('admin'), async (req, res
 })
 
 //! BORRAR UN PRODUCTO POR ID SI SOS ADMIN
-router.delete('/:pid', passportCall('jwt'), authorization('admin'), async (req, res) => {
+router.delete('/:pid', passportCall('jwt'), checkProductOwnership/* authorization('admin') */, async (req, res) => {
     try {
         const { pid } = req.params
         const newStatus = { status: false }

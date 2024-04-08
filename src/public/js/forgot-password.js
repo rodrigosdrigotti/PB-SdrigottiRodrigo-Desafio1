@@ -1,4 +1,9 @@
+const clear = document.getElementById('clearInput')
 const form = document.getElementById('forgotPassword')
+
+clear.onclick = function() {
+    form.reset()
+}
 
 form.addEventListener('submit', e => {
     e.preventDefault()

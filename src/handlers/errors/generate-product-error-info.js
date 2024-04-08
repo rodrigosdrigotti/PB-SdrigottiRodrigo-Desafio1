@@ -6,7 +6,8 @@ const generateProductErrorInfo = productInfo => {
     * Code   : needs to be a string, received ${productInfo.code},
     * Price   : needs to be a number, received ${productInfo.price},
     * Stock   : needs to be a number, received ${productInfo.stock},
-    * Category   : needs to be a string, received ${productInfo.category}`
+    * Category   : needs to be a string, received ${productInfo.category}
+    * Owner   : needs to be a string, received ${productInfo.owner}`
 }
 
 module.exports = generateProductErrorInfo

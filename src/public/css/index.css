@@ -140,6 +140,12 @@ h4 {
     padding-top: 20px;
     font-size: 30px;
 }
+h5 {
+    color: white;
+    padding: 5px 0 20px 0;
+    font-size: 24px;
+    width: 90%;
+}
 .line-separator {
     width: 100%;
     margin: 25px 0;
@@ -481,6 +487,16 @@ input {
     outline: none;
     padding: 10px;
 }
+.loginSelect {
+    height: 50px;
+    color: #FFF;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    padding: 10px;
+}
 .loginInput::placeholder {
     color: #ffffff85;
     font-size: 20px;
@@ -553,4 +569,24 @@ input {
     cursor: pointer;
     text-decoration: none;
     margin-top: 25px;
+}
+#clearInput {
+    position: absolute;
+    right: 10px;
+    bottom: 12.5px;
+    z-index: 10;
+}
+.labelForgot {
+    display: flex;
+    color: #FFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: start;
+    margin: 10px;
+    font-size: 20px;
+    gap: 10px;
+    position: relative;
 }

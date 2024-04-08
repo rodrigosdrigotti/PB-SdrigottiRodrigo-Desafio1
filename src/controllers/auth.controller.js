@@ -3,6 +3,8 @@ const { generateToken } = require('../utils/jwt.util')
 const User = require('../DAO/models/user.model')
 const { useValidPassword, createHash } = require('../utils/crypt-password.util')
 const passport = require('passport')
+const transport = require('../utils/nodemailer.util')
+const serviceEmail = require('../configs/services.config')
 
 const router = Router()
 
@@ -32,7 +34,7 @@ router.post('/', async (req, res) => {
     req.logger.info('Success Logged In')
     res 
       .cookie('authToken', token, {
-        maxAge: 60000,
+        maxAge: 90000,
         httpOnly: true
       })
       .json({ status: 'Success', payload: 'Logged In'})
@@ -45,17 +47,46 @@ router.post('/', async (req, res) => {
   }
 })
 
-//! CAMBIO DE CONTRASEÑA OLVIDADA
+//! ENVIO DE TOKEN LINK PARA CAMBIO DE CONTRASEÑA OLVIDADA
 router.post('/forgot-password', async (req, res) => {
   try {
-    const { email, password } = req.body
-    if(!email || !password) return res.status(400).json({ status: 'Error', error: 'Bad Request'})
+    const { email } = req.body
 
-    const passwordEncrypted = createHash(password)
+    if(!email) return res.status(400).json({ status: 'Error', error: 'Bad Request'})
 
-    await User.updateOne({email}, {password: passwordEncrypted})
+    const user = await User.findOne({ email: email })
+  
+    if (!user) return res.status(400).json({ status: 'error', error: 'Bad Request' })
+    
+    const token = generateToken({
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role,
+      cart: user.cart,
+    })
 
-    res.json({ status: 'Success', message: 'Password Updated'})
+    const resetLink = `http://localhost:8080/api/reset-password/${token}`;
+
+    transport.sendMail({
+      from: serviceEmail.email.identifier,
+      to: user.email,
+      subject: 'Restablecer Contraseña',
+      html: `
+            <h1>Hola ${user.first_name}!!!</h1>
+            <div>Haga click en el siguiente link si desea restablecer su Contraseña</div>
+            <button><a href="${resetLink}">Restablecer</a></button>
+            <div>
+            `,
+    })
+
+    req.logger.info('Link Sent Successfully')
+    res 
+      .cookie('authToken', token, {
+        maxAge: 60000,
+        httpOnly: true
+      })
+      .json({ status: 'Success', payload: 'Link Sent'})
 
   } catch (error) {
     req.logger.error('Error:', error)
@@ -63,6 +94,37 @@ router.post('/forgot-password', async (req, res) => {
       .status(500)
       .json({ status: 'error', message: 'Internal Server Error' })
   }
+})
+
+//! GENERAR LA CONTRASEÑA NUEVA
+router.post('/reset-password', async (req, res) => {
+  try {  
+    const { email, password } = req.body
+
+    const user = await User.findOne({ email: email })
+  
+    if (!user){
+      res.status(400).json({ status: 'error', error: 'Bad Request' })
+    }
+
+    if (useValidPassword(user, password)) {
+      return res.status(400).json({ status: 'error', error: 'Bad Request' })    
+    }
+  
+    const passwordEncrypted = createHash(password)
+
+    await User.updateOne({email}, {password: passwordEncrypted})
+
+    req.logger.info('Password Updated')
+    res.json({ status: 'Success', message: 'Password Updated'})
+
+  } catch (error) {
+      req.logger.error('Error:', error)
+      res
+        .status(500)
+        .json({ status: 'error', message: 'Internal Server Error' })
+  }
+  
 })
 
 //! LOGOUT DE USUARIO

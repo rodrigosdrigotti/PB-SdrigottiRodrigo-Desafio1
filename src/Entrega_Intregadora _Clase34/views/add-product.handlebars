@@ -1,0 +1,70 @@
+<div class='addProductForm'>
+    <h1>Agregar Producto</h1>
+    <form class='form' id="addProductForm">
+        <label class='label'>
+            Titulo:
+            <input class='loginInput'
+                name='title'
+                type="text"
+                {{!-- required --}}
+            />
+        </label>
+        <label class='label'>
+            Descripción:
+            <input class='loginInput'
+                name='description'
+                type="text"
+                required
+            />
+        </label>
+        <label class='label'>
+            Código:
+            <input class='loginInput'
+                name='code'
+                type="text"
+                required
+            />
+        </label>
+        <label class='label'>
+            Precio:
+            <input class='loginInput' 
+                name='price'
+                type="text"
+                {{!-- required --}}
+            />
+        </label>
+        <label class='label'>
+            Stock:
+            <input class='loginInput' 
+                name='stock'
+                type="text"
+                required
+            />
+        </label>
+        <label class='label'>
+            Categoria:
+            <input class='loginInput' 
+                name='category'
+                type="text"
+                required
+            />
+        </label>
+        <label class='label'>
+            Imagen:
+            <input class='loginInput' 
+                name='thumbnail'
+                type="text"
+                required
+            />
+        </label>
+        <div classe='label'>
+            <button type='submit' class='loginButton'>Agregar Producto</button>
+        </div>
+        <div class='label-text'>
+            <a href="/login.html">Volver a Inicio</a>
+        </div>
+    </form>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/add-product.js"></script>

@@ -26,7 +26,7 @@ form.addEventListener('submit', e => {
     .then(response => response.json())
     .then(responseData => {
         if (responseData.status === 'Success') { 
-            window.location.href = '/api/products'; 
+           window.location.href = '/api/products'; 
         } else {
             // Inicio de sesión no exitoso
             console.log("Inicio de sesión fallido")

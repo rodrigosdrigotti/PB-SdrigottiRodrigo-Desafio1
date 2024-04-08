@@ -24,7 +24,20 @@ const productSchema = new mongoose.Schema({
     thumbnail: String,
     createdAt: Date,
     updatedAt: Date,
+    owner: {
+        type: mongoose.Schema.Types.String,
+        ref: 'user',
+        default: 'admin',
+    }
 })
+
+/* productSchema.pre('find', function(){
+    this.populate('owner')
+})
+
+productSchema.pre('findOne', function(){
+    this.populate('owner')
+}) */
 
 productSchema.plugin(mongoosePaginate)
 
