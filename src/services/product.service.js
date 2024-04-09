@@ -32,6 +32,16 @@ const getOneById = async pid => {
     }
 }
 
+const getOneByOwner = async (pid, owner) => {
+    try {
+        const productFound = await Product.oneProductByOwner(pid, owner)
+
+        return productFound
+    } catch (error) {
+        throw error
+    }
+}
+
 const insertOne = async newProductInfo => {
     try {
         newProductInfo.createdAt = new Date()
@@ -79,6 +89,7 @@ module.exports = {
     addAllProducts,
     getAll,
     getOneById,
+    getOneByOwner,
     insertOne, 
     updateOne,
     deleteOne,

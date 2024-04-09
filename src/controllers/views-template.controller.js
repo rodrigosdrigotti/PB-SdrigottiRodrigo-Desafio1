@@ -4,9 +4,9 @@ const authorization = require('../middlewares/authorization.middleware')
 const CurrentUserDto = require('../DTO/current-user.dto')
 const generateProducts = require('../utils/products-mock.util')
 const productsService = require('../services/product.service')
-const { authToken } = require('../utils/jwt.util')
 const jwt = require('jsonwebtoken')
 const { jwtSecret } = require('../configs/index')
+const User = require('../DAO/models/user.model')
 
 const router = Router()
 
@@ -21,7 +21,7 @@ router.get('/signup', async (req, res) => {
 })
 
 //! MUESTRA EL PROFILE DEL USUARIO LOGUEADO
-router.get('/profile', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.get('/profile', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const user = req.user
         res.render ('profile.handlebars', { user , style:'index.css'})   
@@ -124,6 +124,30 @@ router.get('/loggerTest', passportCall('jwt'), authorization('user'), (req, res)
         req.logger.fatal('Fatal message')
         
         res.json({ status: 'sucess', message: 'Logs registrados correctamente. Ver consola' });
+
+    } catch (error) {
+        req.logger.error('Error:', error)
+        res
+        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+        .json({  status: 'error', error  })
+    }
+})
+
+//! CAMBIAR DE ROL USER A PREMIUM
+router.get('/users/premium/:uid', passportCall('jwt'), async (req, res) => {
+    try {
+        const { uid } = req.params
+
+        const user = await User.findById(uid)
+
+        if (!user) return res.status(400).json({ status: 'error', error: 'Bad Request' })
+        
+        user.role = user.role === 'user' ? 'premium' : 'user';
+
+        await user.save()
+
+        req.logger.info(`Role Cambiado a: ${user.role}`)
+        res.json({ status: 'Success', payload: `Role cambiado a: ${user.role}`})
 
     } catch (error) {
         req.logger.error('Error:', error)

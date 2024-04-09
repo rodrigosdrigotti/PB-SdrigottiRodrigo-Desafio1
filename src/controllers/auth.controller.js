@@ -5,6 +5,8 @@ const { useValidPassword, createHash } = require('../utils/crypt-password.util')
 const passport = require('passport')
 const transport = require('../utils/nodemailer.util')
 const serviceEmail = require('../configs/services.config')
+const jwt = require('jsonwebtoken')
+const { jwtSecret } = require('../configs/index')
 
 const router = Router()
 
@@ -99,7 +101,14 @@ router.post('/forgot-password', async (req, res) => {
 //! GENERAR LA CONTRASEÑA NUEVA
 router.post('/reset-password', async (req, res) => {
   try {  
-    const { email, password } = req.body
+    const { token, password } = req.body
+
+    const email = jwt.verify(token, jwtSecret, (error, credentials) => {
+        
+      if (error) return res.status(403).json({ error: 'Unauthorized' })
+      
+      return credentials.email
+    })
 
     const user = await User.findOne({ email: email })
   

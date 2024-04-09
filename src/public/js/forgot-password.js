@@ -38,7 +38,7 @@ form.addEventListener('submit', e => {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "No se ha podido cambiar la Contraseña",
+                text: "Se ha producido un error al cambiar la Contraseña",
               });
         }
     })

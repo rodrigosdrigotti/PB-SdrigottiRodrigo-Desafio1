@@ -5,11 +5,12 @@ const passportCall = require('../utils/passport-call.util')
 const authorization = require('../middlewares/authorization.middleware')
 const User = require('../DAO/models/user.model')
 const ticketService = require('../services/ticket.service')
+const productsService = require('../services/product.service')
 
 const router = Router()
 
 //! DEVUELVE TODOS LOS CARRITOS DE COMPRAS DEL USUARIO LOGUEADO
-router.get('/', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.get('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const { email } = req.user
         
@@ -60,7 +61,7 @@ router.get('/:cid', async (req, res) => {
 })
 
 //! CREA UN CARRITO CON UN ARRAY DE PRODUCTOS VACIO SINO SUMA CANTIDAD
-router.post('/', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.post('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const { email } = req.user
         const user = await User.findOne({email: email})
@@ -68,6 +69,17 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
         const pid = req.body.productId
         const quantity = parseInt(req.body.quantity)
         
+        if(user.role === 'premium') {
+            const productBelongsToUser = await productsService.getOneByOwner({_id: pid, owner: email})
+            if(productBelongsToUser) {
+                return (
+                    req.logger.error('Error:', new Error('No puedes agregar un producto que te pertenece')),
+                    res
+                    .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
+                    .json({  status: 'error', error: 'No puedes agregar un producto que te pertenece'  })
+            )}
+        }
+
         if(!user.cart) {
             const newCartInfo = {
                 products: [{
@@ -101,7 +113,7 @@ router.post('/', passportCall('jwt'), authorization('user'), async (req, res) =>
 })
 
 //! ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO POR EL USUARIO
-router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.delete('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const { email } = req.user
         
@@ -125,7 +137,7 @@ router.delete('/', passportCall('jwt'), authorization('user'), async (req, res) 
 })
 
 //! ELIMINAR TODOS LOS PRODUCTOS DEL CARRITO 
-router.delete('/:cid', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.delete('/:cid', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const { cid } = req.params
 
@@ -144,7 +156,7 @@ router.delete('/:cid', passportCall('jwt'), authorization('user'), async (req, r
 })
 
 //! FINALIZAR EL PROCESO DE COMPRA DEL CARRITO
-router.get('/:cid/purchase', passportCall('jwt'), authorization('user'), async (req, res) => {
+router.get('/:cid/purchase', passportCall('jwt'), authorization('premium'), async (req, res) => {
     try {
         const { cid } = req.params
 
@@ -171,64 +183,6 @@ router.get('/:cid/purchase', passportCall('jwt'), authorization('user'), async (
         
     } catch (error) {
         req.logger.error('Error:', error)
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
-    }
-})
-
-
-
-
-
-
-
-//Agrega un producto por PID al carrito indicado por CID
-router.post('/:cid/product/:pid', async (req, res) => {
-    try {
-        const { cid, pid } = req.params
-
-        const productAdded = await cartsService.insertInsideOne(cid, pid)
-
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'Success', payload: productAdded})
-    } catch (error) {
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
-    }
-})
-//Agrega un producto por PID al carrito indicado por CID
-router.put('/:cid', async (req, res) => {
-    try {
-        const cid = req.params.cid
-        const pid = req.body.productId
-        const quantity = req.body.quantity || 1
-
-        const productAdded = await cartsService.insertInsideOnePatch(cid, pid, quantity)
-
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'Success', payload: productAdded})
-    } catch (error) {
-        res
-        .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
-        .json({  status: 'error', error  })
-    }
-})
-//Actualizar SÓLO la variable quantity del producto indicado por la cantidad pasada por body
-router.put('/:cid/product/:pid', async (req, res) => {
-    try {
-        const { cid, pid } = req.params
-        const { quantity } = req.body
-
-        const productAdded = await cartsService.updateOne(cid, pid, quantity)
-
-        res
-        .status(HTTP_RESPONSES.CREATED)
-        .json({ status: 'Success', payload: productAdded})
-    } catch (error) {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })

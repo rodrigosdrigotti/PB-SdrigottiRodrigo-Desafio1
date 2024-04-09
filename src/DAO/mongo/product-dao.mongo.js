@@ -18,6 +18,10 @@ class ProductDAO {
         return await Product.findById(pid, {__v: 0})
     }
 
+    async oneProductByOwner(pid, owner) {
+        return await Product.findOne(pid, owner, {__v: 0})
+    }
+
     async newProduct(newProductInfo) {
         return await Product.create(newProductInfo)
     }
