@@ -21,14 +21,15 @@ router.get('/', passportCall('jwt'), authorization('premium'), async (req, res) 
         const sortDirection = req.query.sort === 'desc' ? -1 : 1
         const sort = req.query.sort ? { price: sortDirection } : undefined;
         const filter = {};
-        
+
         if (req.query.category) {
             filter.category = req.query.category
         }
-        
         if (Boolean(req.query.available)) {
             filter.available = req.query.available
         }
+        
+        filter.status = true
         
         const {docs, pages, hasPrevPage, hasNextPage, prevPage, nextPage} = await Product.paginate(filter, {limit, page, sort, lean: true})
         const products = docs

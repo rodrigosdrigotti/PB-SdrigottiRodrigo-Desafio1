@@ -9,7 +9,7 @@ const checkProductOwnership = async (req, res, next) => {
 
         if(!req.user) return res.status(401).json({ status: 'error', error: 'Unauthorized'})
 
-        if(req.user.role === 'admin' || (req.user.role === 'premium' && product.owner.equals(req.user._id))) {
+        if(req.user.role === 'admin' || (req.user.role === 'premium' && product.owner === req.user.email)) {
             req.product = product
             next()
         } else {
