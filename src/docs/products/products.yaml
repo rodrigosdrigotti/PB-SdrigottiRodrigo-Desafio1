@@ -1,0 +1,234 @@
+openapi: "3.0.3"
+info: 
+  title: API Products
+  version: "1.0"
+paths: 
+  /api/products/:
+    get:
+      tags:
+        - products
+      summary: Obtienes todos los Productos
+      description: Devuelve todos los Productos de la BD
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - products
+      summary: Agregar un nuevo Producto. Rol Admin o Premium
+      description: Agregar un nuevo Producto en la BD
+      requestBody:
+        description: Crear un nuevo Producto
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '201':
+          description: Producto Creado Correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /api/products/{pid}:
+    get:
+      tags:
+        - products
+      summary: Obtienes un Producto por ID
+      description: Devuelve el Producto de la BD a traves de su ID
+      parameters:
+        - name: productID
+          in: path
+          description: ID de Producto a Buscar
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - products
+      summary: Actualizar un Producto por ID
+      description: Actualizar Producto en la BD a traves de su ID
+      parameters:
+        - name: productID
+          in: path
+          description: ID de Producto a Actualizar
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Producto Actualizado Correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - products
+      summary: Eliminar un Producto por su ID. Rol Admin o Premium
+      description: Solo se cambia el status del Producto a false.
+      parameters:
+        - name: productID
+          in: path
+          description: ID de Producto a Eliminar
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Producto Eliminado
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por Mongo
+          example: ObjectId("oi3232owbciw923wo")
+        title: 
+          type: string
+          description: Nombre del producto
+          example: "Remera Crossfit"
+        description: 
+          type: string
+          description: Descripción del producto
+          example: "Fabricadas con la tela Dry Tech. Están diseñadas para mantenerte fresco y seco incluso en los entrenamientos más intensos."
+        code: 
+          type: string
+          description: Código del producto
+          example: abcd12345
+        price: 
+          type: integer
+          description: Precio del producto
+          example: 450
+        status: 
+          type: boolean
+          description: Estado del producto
+          example: true
+        available: 
+          type: boolean
+          description: Disponibilidad del producto
+          example: true
+        stock: 
+          type: integer
+          description: Stock del producto
+          stock: 35
+        category: 
+          type: string
+          description: Categoría del producto
+          example: "Indumentaria Hombre"
+        thumbnail: 
+          type: string
+          description: Imágen del producto
+          example: "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg"
+        owner: 
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por Mongo
+          example: ObjectId("284209dwediowdacd7")
+        first_name: 
+          type: string
+          description: Nombre del usuario
+          example: "Matias"
+        last_name: 
+          type: string
+          description: Apellido del usuario
+          example: "Fernández"
+        email: 
+          type: string
+          description: Correo del usuario
+          example: "matiasfernandez@correo.com"
+        age: 
+          type: integer
+          description: Edad del usuario
+          example: 28
+        password: 
+          type: string
+          description: Contraseña del usuario
+          example: "ojdowcwciuvvqqpiqeu9y3wipd93"
+        role: 
+          type: string
+          description: Rol del usuario
+          enum:
+            - user
+            - admin
+            - premium
+          example: "premium"
+        cart:
+          $ref: '#/components/schemas/Cart'
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por Mongo
+          example: ObjectId("wniohdo39728362bda")
+        products: 
+          type: object
+          properties: 
+            product: 
+              $ref: '#/components/schemas/Product'
+              example: ObjectId("potrncby362947442hda")
+            quantity: 
+              type: integer
+              example: 5
+          description: Productos en el carrito
+        status: 
+          type: boolean
+          description: Estado del carrito
+          example: true

@@ -8,8 +8,12 @@ const passport = require('passport')
 const handlebars = require('express-handlebars')
 const compression = require('express-compression')
 const errorMiddleware = require('./middlewares/errors/index')
+const swaggerUiExpress = require('swagger-ui-express')
+const specs = require('./utils/swagger/swagger.util')
 
 const app = express()
+
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(logger)
 app.use(express.json())
@@ -31,7 +35,6 @@ app.set('view engine', 'handlebars')
 app.use(compression({
   brotli: {enabled: true, zlib: {}}
 }))
-
 
 router(app)
 
