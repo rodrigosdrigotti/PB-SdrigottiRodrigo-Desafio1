@@ -14,7 +14,6 @@ const checkProductOwnership = require('../middlewares/checkProductOwnership.midd
 const router = Router()
 
 //! DEVUELVE TODOS LOS PRODUCTOS
-//router.get('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
 router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 10
