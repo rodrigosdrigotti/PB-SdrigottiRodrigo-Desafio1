@@ -10,7 +10,7 @@ const productsService = require('../services/product.service')
 const router = Router()
 
 //! DEVUELVE TODOS LOS CARRITOS DE COMPRAS DEL USUARIO LOGUEADO
-router.get('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const { email } = req.user
         

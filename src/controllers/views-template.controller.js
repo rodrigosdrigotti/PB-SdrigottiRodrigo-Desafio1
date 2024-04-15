@@ -21,7 +21,7 @@ router.get('/signup', async (req, res) => {
 })
 
 //! MUESTRA EL PROFILE DEL USUARIO LOGUEADO
-router.get('/profile', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.get('/profile', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const user = req.user
         res.render ('profile.handlebars', { user , style:'index.css'})   
