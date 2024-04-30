@@ -59,7 +59,7 @@ router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin'])
     }
 })
 
-//! AGREGAR UN PRODUCTO SI SOS ADMIN CON POST
+//! AGREGAR UN PRODUCTO SI SOS ADMIN/PREMIUM CON POST
 router.post('/', passportCall('jwt'), authorization('premium'), async (req, res, next) => {
     try {
         const { title, description, code, price, stock, category } = req.body
@@ -125,7 +125,7 @@ router.put('/:pid', passportCall('jwt'), checkProductOwnership/* authorization('
 })
 
 //! BORRAR UN PRODUCTO POR ID SI SOS ADMIN
-router.delete('/:pid', passportCall('jwt'), checkProductOwnership/* authorization('admin') */, async (req, res) => {
+router.delete('/:pid', passportCall('jwt'), checkProductOwnership, async (req, res) => {
     try {
         const { pid } = req.params
         const newStatus = { status: false }
