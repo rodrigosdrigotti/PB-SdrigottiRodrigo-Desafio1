@@ -153,13 +153,13 @@ Project Link: [https://github.com/rodrigosdrigotti/PB-SdrigottiRodrigo-ProductMa
 [Mongo-url]: https://www.mongodb.com/
 [Laravel.com]: https://img.shields.io/badge/Javascript-FF2D20?style=for-the-badge&logo=javascript&logoColor=white
 [Laravel-url]: https://laravel.com
-[Github.com]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+[Github.com]: https://img.shields.io/badge/GitHub-F2F4F9?style=for-the-badge&logo=github&logoColor=black
 [Github-url]: https://github.com/
 [Handlebars.com]: https://img.shields.io/badge/Handlebars%20js-f0772b?style=for-the-badge&logo=handlebarsdotjs&logoColor=black
 [Handlebars-url]: https://handlebarsjs.com/
-[JWToken.com]: https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white
+[JWToken.com]: https://img.shields.io/badge/JWT-4A4A55?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white
 [JWToken-url]: https://jwt.io/
-[Socket.io]: https://img.shields.io/badge/Socket.io-010101?&style=for-the-badge&logo=Socket.io&logoColor=white
+[Socket.io]: https://img.shields.io/badge/Socket.io-0FAAFF?&style=for-the-badge&logo=Socket.io&logoColor=white
 [Socket-url]: https://socket.io/
 [Visualstudio.com]: https://img.shields.io/badge/VSC-0769AD?style=for-the-badge&logo=visualstudiocode&logoColor=white
 [VSC-url]: https://code.visualstudio.com
