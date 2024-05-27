@@ -42,6 +42,7 @@ Lista de Plataformas / Frameworks / Libraries que vas a necesitar
 * [![Github][Github.com]][Github-url]
 * [![Handlebars][Handlebars.com]][Handlebars-url]
 * [![JWToken][JWToken.com]][JWToken-url]
+* [![Socket][Socket.io]][Socket-url]
 * [![VisualStudioCode][Visualstudio.com]][VSC-url]
 
 <p align="right">(<a href="#readme-top"> Ir arriba </a>)</p>
@@ -158,5 +159,7 @@ Project Link: [https://github.com/rodrigosdrigotti/PB-SdrigottiRodrigo-ProductMa
 [Handlebars-url]: https://handlebarsjs.com/
 [JWToken.com]: https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white
 [JWToken-url]: https://jwt.io/
+[Socket.io]: https://img.shields.io/badge/Socket.io-010101?&style=for-the-badge&logo=Socket.io&logoColor=white
+[Socket-url]: https://socket.io/
 [Visualstudio.com]: https://img.shields.io/badge/VSC-0769AD?style=for-the-badge&logo=visualstudiocode&logoColor=white
 [VSC-url]: https://code.visualstudio.com
