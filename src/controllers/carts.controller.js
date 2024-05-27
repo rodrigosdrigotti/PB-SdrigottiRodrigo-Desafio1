@@ -17,7 +17,7 @@ router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin'])
         const user = await User.findOne({email: email})
         
         if(!user.cart){
-            res.render('cart', { style: 'index.css',})
+            res.render('cart', { user, isAdmin: user.role === 'admin', style: 'index.css',})
         }
         else {
             const cartId = await cartsService.getOneById(user.cart)
@@ -25,6 +25,8 @@ router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin'])
             const userCartId = user.cart
             
             res.render('cart', { 
+                user,
+                isAdmin: user.role === 'admin',
                 userCartId,
                 cartId,
                 style: 'index.css',
@@ -43,10 +45,13 @@ router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin'])
 router.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
+        const user = req.user
         
         const cartId = await cartsService.getOneById(cid)
         
         res.render('cart', { 
+            user,
+            isAdmin: user.role === 'admin',
             cartId,
             style: 'index.css',
         })
@@ -174,7 +179,9 @@ router.get('/:cid/purchase', passportCall('jwt'), authorization('premium'), asyn
             .status(HTTP_RESPONSES.CREATED)
             .json({ status: 'Success', payload: newTicket}) */
 
-        return res.render('purchase.handlebars', { 
+        req.logger.info('Purchase Made')
+        res.render('purchase.handlebars', { 
+                isTicket: newTicket.length !== 0,
                 newTicket,
                 cartToUpdate,
                 style: 'index.css',

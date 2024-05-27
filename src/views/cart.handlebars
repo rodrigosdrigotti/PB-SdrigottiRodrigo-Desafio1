@@ -10,7 +10,17 @@
             <li class='nav_page'>
                 <a href="/api/profile">Profile</a>
             </li>
+            {{#if isAdmin}}
+            <li class='nav_page'>
+                <a href="/api/users">Users</a>
+            </li>
+            {{/if}}
         </ul>
+        <div class='nav-icons'>
+            <p>BIENVENIDO/A:</p>
+            <p class="nameUser">{{user.first_name}}</p>
+            <p class="nameUser">Role: {{user.role}}</p>
+        </div>
     </nav>
     <button class='nav-btn'>
         <FaBars />

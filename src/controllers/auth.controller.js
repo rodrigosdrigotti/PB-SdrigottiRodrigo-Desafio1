@@ -32,6 +32,10 @@ router.post('/', async (req, res) => {
       role: user.role,
       cart: user.cart,
     })
+
+    const newupdatedAt = { updatedAt: new Date() }
+    
+    await User.updateOne({_id: user._id}, newupdatedAt)
     
     req.logger.info('Success Logged In')
     res 

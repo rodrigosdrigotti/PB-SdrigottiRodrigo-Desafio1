@@ -20,11 +20,23 @@ router.get('/signup', async (req, res) => {
     }
 })
 
+router.get('/editUser/:uid', passportCall('jwt'), authorization(['admin']), async (req, res) => {
+    try {
+        const uid = req.params.uid
+        const user = req.user
+
+        res.render ('userRole-edit.handlebars', { user, isAdmin: user.role === 'admin', uid, style:'index.css' })   
+    } catch (error) {
+        req.logger.error('Error:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
 //! MUESTRA EL PROFILE DEL USUARIO LOGUEADO
 router.get('/profile', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const user = req.user
-        res.render ('profile.handlebars', { user , style:'index.css'})   
+        res.render ('profile.handlebars', { user, isAdmin: user.role === 'admin' , style:'index.css'})   
     } catch (error) {
         req.logger.error('Error:', error)
         res.status(500).json({ error: 'Internal Server Error' })
@@ -154,6 +166,27 @@ router.get('/users/premium/:uid', passportCall('jwt'), async (req, res) => {
         res
         .status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR)
         .json({  status: 'error', error  })
+    }
+})
+
+//! RECUPERAR USER ELIMINADO
+router.get('/userRecovered/:token', async (req, res) => {
+    try {
+        const { token } = req.params
+    
+        jwt.verify(token, jwtSecret, (error, credentials) => {
+        
+            if (error) return res.status(403).json({ error: 'Unauthorized' })
+
+            const expirationTime = new Date(credentials.exp * 1000)
+            
+            const timeLeft = Math.floor((expirationTime - new Date()) / 1000)
+  
+            res.render ('recover-user.handlebars', { token, timeLeft, style:'index.css'})  
+        })
+    } catch (error) {
+        req.logger.error('Error:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
     }
 })
 

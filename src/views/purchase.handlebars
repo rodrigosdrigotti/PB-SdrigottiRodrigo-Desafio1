@@ -18,54 +18,87 @@
 </header>
 
 <h1>Ticket De Compra</h1>
-  
-<div class="container">
-    <div class="cart-container">
-        <div class="purchase-card">
-            <div class="purchase-info">
-                <p class="purchase-info-title">Código de Ticket: </p>
-                <p class="purchase-info-text">{{newTicket.code}}</p>
-            </div>
-            <div class="purchase-info">
-                <p class="purchase-info-title">Fecha Compra: </p>
-                <p class="purchase-info-text">{{newTicket.purchase_datetime}}</p>
-            </div>
-            <div class="purchase-info">
-                <p class="purchase-info-title">Monto Total: </p>
-                <p class="purchase-info-text">${{newTicket.amount}}</p>
-            </div>
-            <div class="purchase-info">
-                <p class="purchase-info-title">Usuario: </p>
-                <p class="purchase-info-text">{{newTicket.purchaser}}</p>
-            </div>
-        </div>
-        {{#if cartToUpdate}}
-        {{#each cartToUpdate}}
-            <h4>------ PRODUCTOS SIN STOCK ------</h4>
-            <div class="cart-card">
-                <div class="info-card">
-                    <div class="img">
-                        <img src="{{this.product.thumbnail}}">
-                    </div>
-                </div>
-                <div class="info-text">
-                    <p class="info-text-title">{{this.product.title}}</p>
-                    <div class="info-text-price">
-                        <p>Price: ${{this.product.price}}</p>
-                        <p>Stock: {{this.product.stock}}</p>
-                    </div>
-                </div>
-                <div class="info-total">
-                    <p>Cant: {{this.quantity}}</p>
-                    <p>P/Uni.: {{this.product.price}}</p>
-                    <p>Total: </p>
-                </div>
 
+{{#if isTicket}}
+    <div class="container">
+        <div class="cart-container">
+            <div class="purchase-card">
+                <div class="purchase-info">
+                    <p class="purchase-info-title">Código de Ticket: </p>
+                    <p class="purchase-info-text">{{newTicket.code}}</p>
+                </div>
+                <div class="purchase-info">
+                    <p class="purchase-info-title">Fecha Compra: </p>
+                    <p class="purchase-info-text">{{newTicket.purchase_datetime}}</p>
+                </div>
+                <div class="purchase-info">
+                    <p class="purchase-info-title">Monto Total: </p>
+                    <p class="purchase-info-text">${{newTicket.amount}}</p>
+                </div>
+                <div class="purchase-info">
+                    <p class="purchase-info-title">Usuario: </p>
+                    <p class="purchase-info-text">{{newTicket.purchaser}}</p>
+                </div>
             </div>
-        {{/each}}
-        {{/if}}
-        <div class='purchase-link-home'>
-           <a href="/api/products">Volver a Home</a> 
+            {{#if cartToUpdate}}
+                <h4>------ PRODUCTOS SIN STOCK ------</h4>
+                {{#each cartToUpdate}}
+                <div class="cart-card">
+                    <div class="info-card">
+                        <div class="img">
+                            <img src="{{this.product.thumbnail}}">
+                        </div>
+                    </div>
+                    <div class="info-text">
+                        <p class="info-text-title">{{this.product.title}}</p>
+                        <div class="info-text-price">
+                            <p>Price: ${{this.product.price}}</p>
+                            <p>Stock: {{this.product.stock}}</p>
+                        </div>
+                    </div>
+                    <div class="info-total">
+                        <p>Cant: {{this.quantity}}</p>
+                        <p>P/Uni.: {{this.product.price}}</p>
+                        <p>Total: </p>
+                    </div>
+                </div>
+                {{/each}}
+            {{/if}}
+            <div class='purchase-link-home'>
+                <a href="/api/products">Volver a Home</a> 
+            </div>
         </div>
     </div>
-</div>
+{{else}}
+    <div class="container">
+        <div class="cart-container">
+            {{#if cartToUpdate}}
+                <h4>------ PRODUCTOS SIN STOCK ------</h4>
+                {{#each cartToUpdate}}
+                <div class="cart-card">
+                    <div class="info-card">
+                        <div class="img">
+                            <img src="{{this.product.thumbnail}}">
+                        </div>
+                    </div>
+                    <div class="info-text">
+                        <p class="info-text-title">{{this.product.title}}</p>
+                        <div class="info-text-price">
+                            <p>Price: ${{this.product.price}}</p>
+                            <p>Stock: {{this.product.stock}}</p>
+                        </div>
+                    </div>
+                    <div class="info-total">
+                        <p>Cant: {{this.quantity}}</p>
+                        <p>P/Uni.: {{this.product.price}}</p>
+                        <p>Total: </p>
+                    </div>
+                </div>
+                {{/each}}
+            {{/if}}
+            <div class='purchase-link-home'>
+                <a href="/api/products">Volver a Home</a> 
+            </div>
+        </div>
+    </div>
+{{/if}}

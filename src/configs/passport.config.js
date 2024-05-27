@@ -37,6 +37,10 @@ const initializePassport = () => {
                 }
                 
                 const newUserInfo = new NewUserDto(req.body)
+
+                newUserInfo.createdAt = new Date()
+                newUserInfo.updatedAt = new Date()
+
                 const newUser = await userService.create(newUserInfo)
                 
                 return done(null, newUser)

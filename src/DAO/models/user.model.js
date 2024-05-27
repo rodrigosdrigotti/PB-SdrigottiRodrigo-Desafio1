@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema({
     }, 
     githubId: Number,
     githubUsername: String,
+    status: {
+        type: Boolean,
+        default: true
+    },
+    createdAt: Date,
+    updatedAt: Date,
 })
 
 userSchema.pre('find', function(){

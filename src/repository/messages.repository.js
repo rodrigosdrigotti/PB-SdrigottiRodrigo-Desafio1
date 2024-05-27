@@ -3,8 +3,8 @@ class MessageRepository {
         this.dao = dao
     }
 
-    async sendMessage(messageInfo) {
-        await this.dao.sendMessage(messageInfo)
+    async sendMessage(messageInfo, code) {
+        await this.dao.sendMessage(messageInfo, code)
     }
 }
 

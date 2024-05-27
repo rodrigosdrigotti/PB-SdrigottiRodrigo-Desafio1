@@ -1,5 +1,3 @@
-
-
 const test = document.addEventListener('DOMContentLoaded', function () {
   if(test){
     let productToAdd = document.getElementById('agregarProducto')
@@ -53,5 +51,25 @@ function addToCart(productId) {
     })
     .catch(error => {
       console.error('Error al agregar al carrito:', error);
+    });
+  }
+
+
+  function deleteProduct(productId) {
+    // Realizar la solicitud DELETE a la API
+    fetch(`/api/products/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      if (responseData.status === 'success') { 
+          window.location.href = '/api/products'; 
+      }
+    })
+    .catch(error => {
+      console.error('Error al eliminar el producto:', error);
     });
   }

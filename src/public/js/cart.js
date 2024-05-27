@@ -1,6 +1,5 @@
 function deleteProduct(productId) {
-    // Realizar la solicitud POST a la API
-    console.log(productId)
+    // Realizar la solicitud DELETE a la API
     fetch(`/api/carts`, {
       method: 'DELETE',
       headers: {

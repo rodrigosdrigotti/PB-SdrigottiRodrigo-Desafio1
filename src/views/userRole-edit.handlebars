@@ -27,31 +27,19 @@
     </button>
 </header>
 
-<h2>Profile</h2>
+<h2>Users</h2>
 
-<div class='profileContainer'>
-    <div class="infoContainer">
-        <label class="labelProfile">Nombre: </label>
-        <p class="textUser">{{user.first_name}}</p>
+<div class='userContainer'>
+    <label class='labelFormUser' for="userRole">Elegir Role:</label>
+    <select class="selectFormUser" id="userRole" name="role">
+        <option value="admin">Admin</option>
+        <option value="premium">Premium</option>
+        <option value="user">User</option>
+    </select>
+    <div>
+        <button class="logoutButton" onclick="editUser('{{ uid }}')">Modificar</button>
+        <a href="/api/users"><button class="logoutButton" onclick="editUser('{{ uid }}')">Volver</button></a>
     </div>
-    {{#if user.last_name}}
-    <div class="infoContainer">
-        <label class="labelProfile" for="">Apellido: </label>
-        <p class="textUser">{{user.last_name}}</p>
-    </div>
-    {{/if}}
-    {{#if user.githubUsername}}
-    <div class="infoContainer">
-        <label class="labelProfile" for="">Github Username: </label>
-        <p class="textUser">{{user.githubUsername}}</p>
-    </div>
-    {{/if}}
-    <div class="infoContainer">
-        <label class="labelProfile" for="">Email: </label>
-        <p class="textUser">{{user.email}}</p>
-    </div>
-    
-    <button class="logoutButton" id="logout">Logout</button>
 </div>
 
-<script src="/js/profile.js"></script>
+<script src="/js/user.js"></script>

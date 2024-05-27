@@ -10,6 +10,8 @@ const ErrorCodes = require('../handlers/errors/enum-errors')
 const generateProductErrorInfo = require('../handlers/errors/generate-product-error-info')
 const TYPES_ERROR = require('../handlers/errors/types.errors');
 const checkProductOwnership = require('../middlewares/checkProductOwnership.middleware.js');
+const userService = require('../services/users.service')
+const messageManager = require('../repository');
 
 const router = Router()
 
@@ -34,9 +36,10 @@ router.get('/', passportCall('jwt'), authorization(['premium', 'user', 'admin'])
         const {docs, pages, hasPrevPage, hasNextPage, prevPage, nextPage} = await Product.paginate(filter, {limit, page, sort, lean: true})
         const products = docs
         const user = req.user
-        
+
         res.render('home.handlebars', { 
             user,
+            isAdmin: user.role === 'admin',
             products,
             totalPages: pages,
             prevPage,
@@ -81,7 +84,8 @@ router.post('/', passportCall('jwt'), authorization('premium'), async (req, res,
             const newProductInfo = new NewProductDto({title, description, code, price, stock, category, owner})
             
             const newProduct = await productsService.insertOne(newProductInfo)
-                
+            
+            req.logger.info('Product Successfully Added')
             res
             .status(HTTP_RESPONSES.CREATED)
             .json({ status: 'success', payload: newProduct})
@@ -90,7 +94,8 @@ router.post('/', passportCall('jwt'), authorization('premium'), async (req, res,
             const newProductInfo = new NewProductDto({title, description, code, price, stock, category})
             
             const newProduct = await productsService.insertOne(newProductInfo)
-                
+               
+            req.logger.info('Product Successfully Added')
             res
             .status(HTTP_RESPONSES.CREATED)
             .json({ status: 'success', payload: newProduct})
@@ -112,6 +117,7 @@ router.put('/:pid', passportCall('jwt'), checkProductOwnership/* authorization('
         
         const productUpdate = await productsService.updateOne(pid, productInfo)
 
+        req.logger.info('Success Product Update')
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: productUpdate})
@@ -130,7 +136,16 @@ router.delete('/:pid', passportCall('jwt'), checkProductOwnership, async (req, r
         const { pid } = req.params
         const newStatus = { status: false }
         const productDelete = await productsService.deleteOne(pid, newStatus)
-        
+
+        if(productDelete){
+            const product = await productsService.getOneById(pid)
+
+            const userPremium = await userService.findOne(product.owner)
+            
+            await messageManager.sendMessage(userPremium, 3)
+        } 
+
+        req.logger.info('Success Product Delete')
         res
         .status(HTTP_RESPONSES.CREATED)
         .json({ status: 'success', payload: productDelete})
