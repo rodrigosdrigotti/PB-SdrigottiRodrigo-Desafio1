@@ -89,8 +89,8 @@ router.get('/:uid', passportCall('jwt'), authorization(['admin']), async (req, r
 router.delete('/', passportCall('jwt'), authorization(['admin']), async (req, res) => {
     try {
         const inactiveUsers = await User.find({
-            //updatedAt: { $lt: new Date(Date.now() - 48 * 60 * 60 * 1000) } // Busca usuarios que no han tenido conexión en las últimas 48 horas
-            updatedAt: { $lt: new Date(Date.now() - 5 * 60 * 1000) } // Busca usuarios que no han tenido conexión en las últimas 5 minutos
+            updatedAt: { $lt: new Date(Date.now() - 48 * 60 * 60 * 1000) } // Busca usuarios que no han tenido conexión en las últimas 48 horas
+            //updatedAt: { $lt: new Date(Date.now() - 5 * 60 * 1000) } // Busca usuarios que no han tenido conexión en las últimas 5 minutos
         });
 
         // Envía un correo electrónico a cada usuario inactivo y elimínalos
