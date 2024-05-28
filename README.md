@@ -101,9 +101,7 @@ Instrucciones para setear tu app.
       - DELETE inactive users (48hs)
       - DELETE/:uID user by ID
       - PUT/:uID uptdate role user
-      - POST//recoverUser recover user inactive
-      - API/PRODUCTS: CRUD de Productos
-
+      - POST/recoverUser recover user inactive
 - `API/PRODUCTS`: CRUD de Productos
     - Endpoints:
       - GET list of products
@@ -111,7 +109,6 @@ Instrucciones para setear tu app.
       - POST create a product
       - PUT/:pID update a product
       - DELETE/:pID product by ID
-      - API/CARTS: CRUD de Carts
 - `API/CARTS`: CRUD de Carts
     - Endpoints:
       - POST create an empty cart or update quantity
@@ -125,24 +122,23 @@ Instrucciones para setear tu app.
     - Endpoint:
       - POST login with JWT Token and Passport
       - POST/forgot-password send link to recover Password
-      - POST//reset-password reset Password
+      - POST/reset-password reset Password
       - GET/github login with Github Account
       - GET/githubcallback callback Github Account
       - GET/logout logout user
-      - OTHER FEATURES: Diferentes vistas con Handlebars
 - `OTHER FEATURES`: Diferentes vistas con Handlebars
     - Endpoints: 
       - GET/signup view Register User
-      - GET//editUser/:uid view Edit User Role
+      - GET/editUser/:uid view Edit User Role
       - GET/profile view User Logged Profile
       - GET/forgotPassword view User Forgot Password
-      - GET//reset-password/:token view for Reset Password
+      - GET/reset-password/:token view for Reset Password
       - GET/current view DTO Current User
       - GET/addProduct view Add New Product
       - GET/mockingProducts view Mocking List of Products
       - GET/loggerTest view Logger Test
-      - GET//users/premium/:uID view for Change Role User byID
-      - GET//userRecovered/:token view for Recover User Deleted
+      - GET/users/premium/:uID view for Change Role User byID
+      - GET/userRecovered/:token view for Recover User Deleted
 - `API/CHAT`: Sala de chat with sockets
     - Endpoints:
         - GET Chat Screen
