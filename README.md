@@ -92,44 +92,58 @@ Instrucciones para setear tu app.
 
 ### Funcionalidades del proyecto
 
-- `USERS`: Registro y Login con recupero de Contraseña
+- `API/USERS`: Registro de Usuarios
     - Endpoints: 
-        - POST login with JWT Token and Passport
-        - POST Register with JWT Token and Passport
-        - GET login with Github Account
-        - GET logout user
-        - GET list of users 
-        - GET user by ID
-        - DELETE inactive users (48hs)
-        - DELETE user by ID
-        - PUT uptdate role user
-        - POST recover user inactive
+      - POST Register with JWT Token and Passport
+      - GET/fail-register fail user register
+      - GET list of users
+      - GET/:uID user by ID
+      - DELETE inactive users (48hs)
+      - DELETE/:uID user by ID
+      - PUT/:uID uptdate role user
+      - POST//recoverUser recover user inactive
+      - API/PRODUCTS: CRUD de Productos
 
-- `PRODUCTS`: CRUD de Productos
+- `API/PRODUCTS`: CRUD de Productos
     - Endpoints:
-        - GET list of products
-        - GET product by ID
-        - POST create a product
-        - PUT update a product
-        - DELETE product by ID
-- `CARTS`: CRUD de Carts
+      - GET list of products
+      - GET/:pID product by ID
+      - POST create a product
+      - PUT/:pID update a product
+      - DELETE/:pID product by ID
+      - API/CARTS: CRUD de Carts
+- `API/CARTS`: CRUD de Carts
     - Endpoints:
-        - POST create an empty cart or update quantity
-        - POST add a product to a cart by ID
-        - GET all carts by User ID
-        - GET cart by ID
-        - GET purchase a cart
-        - DELETE empty a cart
-        - DELETE product in the cart by ID
-- `OTHER FEATURES`: Diferentes vistas 
+      - POST create an empty cart or update quantity
+      - POST add a product to a cart
+      - GET all carts User Logged
+      - GET/:cID cart by ID
+      - GET/:cID/purchase purchase a cart
+      - DELETE/:cID empty a cart
+      - DELETE product in the cart
+- `API/AUTH`: Login de Usuarios
+    - Endpoint:
+      - POST login with JWT Token and Passport
+      - POST/forgot-password send link to recover Password
+      - POST//reset-password reset Password
+      - GET/github login with Github Account
+      - GET/githubcallback callback Github Account
+      - GET/logout logout user
+      - OTHER FEATURES: Diferentes vistas con Handlebars
+- `OTHER FEATURES`: Diferentes vistas con Handlebars
     - Endpoints: 
-        - GET mocking list of Products
-        - GET logger Test
-        - GET user logged profile
-        - GET DTO current user
-        - GET add new Products
-        - GET reset password
-- `CHAT`: Sala de chat with sockets
+      - GET/signup view Register User
+      - GET//editUser/:uid view Edit User Role
+      - GET/profile view User Logged Profile
+      - GET/forgotPassword view User Forgot Password
+      - GET//reset-password/:token view for Reset Password
+      - GET/current view DTO Current User
+      - GET/addProduct view Add New Product
+      - GET/mockingProducts view Mocking List of Products
+      - GET/loggerTest view Logger Test
+      - GET//users/premium/:uID view for Change Role User byID
+      - GET//userRecovered/:token view for Recover User Deleted
+- `API/CHAT`: Sala de chat with sockets
     - Endpoints:
         - GET Chat Screen
 - `MAILING`
