@@ -8,3 +8,4 @@ error: Error: error is not defined {"stack":"ReferenceError: error is not define
 error: Error message
 fatal: Fatal message
 error: Error: No auth token
+error: Error: No auth token

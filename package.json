@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "ENVIRONMENT=prod node src/index.js",
     "start:dev": "ENVIRONMENT=dev nodemon src/index.js",
     "start:prod": "ENVIRONMENT=prod nodemon src/index.js",
     "test": "mocha src/test/supertest.test.js"
