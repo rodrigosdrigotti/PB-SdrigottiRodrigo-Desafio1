@@ -66,7 +66,7 @@ router.get('/:cid', async (req, res) => {
 })
 
 //! CREA UN CARRITO CON UN ARRAY DE PRODUCTOS VACIO SINO SUMA CANTIDAD
-router.post('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.post('/', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const { email } = req.user
         const user = await User.findOne({email: email})
@@ -118,7 +118,7 @@ router.post('/', passportCall('jwt'), authorization('premium'), async (req, res)
 })
 
 //! ELIMINAR DEL CARRITO EL PRODUCTO SELECCIONADO POR EL USUARIO
-router.delete('/', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.delete('/', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const { email } = req.user
         
@@ -142,7 +142,7 @@ router.delete('/', passportCall('jwt'), authorization('premium'), async (req, re
 })
 
 //! ELIMINAR TODOS LOS PRODUCTOS DEL CARRITO 
-router.delete('/:cid', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.delete('/:cid', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const { cid } = req.params
 
@@ -161,7 +161,7 @@ router.delete('/:cid', passportCall('jwt'), authorization('premium'), async (req
 })
 
 //! FINALIZAR EL PROCESO DE COMPRA DEL CARRITO
-router.get('/:cid/purchase', passportCall('jwt'), authorization('premium'), async (req, res) => {
+router.get('/:cid/purchase', passportCall('jwt'), authorization(['premium', 'user', 'admin']), async (req, res) => {
     try {
         const { cid } = req.params
 

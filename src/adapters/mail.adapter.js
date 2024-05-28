@@ -15,7 +15,7 @@ class MailAdapter {
           cart: messageInfo.cart,
         })
     
-        const resetLink = `pb-sdrigottirodrigo-ecommerce-production.up.railway.app/api/userRecovered/${token}`;
+        const resetLink = `https://pb-sdrigottirodrigo-ecommerce-production.up.railway.app/api/userRecovered/${token}`;
 
         await transport.sendMail({
             from: 'rodrigosdrigotti@gmail.com',

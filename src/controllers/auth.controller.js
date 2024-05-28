@@ -21,6 +21,10 @@ router.post('/', async (req, res) => {
       res.status(400).json({ status: 'error', error: 'Bad Request' })
     }
 
+    if(user.status === false){
+      res.status(400).json({ status: 'error', error: 'Bad Request' })
+    }
+
     if (!useValidPassword(user, password)) {
       return res.status(400).json({ status: 'error', error: 'Bad Request' })
     }
@@ -74,7 +78,7 @@ router.post('/forgot-password', async (req, res) => {
 
     //const resetLink = `http://localhost:8080/api/reset-password/${token}`;
 
-    const resetLink = `pb-sdrigottirodrigo-ecommerce-production.up.railway.app/api/reset-password/${token}`;
+    const resetLink = `https://pb-sdrigottirodrigo-ecommerce-production.up.railway.app/api/reset-password/${token}`;
 
     transport.sendMail({
       from: serviceEmail.email.identifier,
