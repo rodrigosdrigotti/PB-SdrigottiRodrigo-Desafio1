@@ -121,7 +121,7 @@ router.delete('/:uid', passportCall('jwt'), authorization(['admin']), async (req
         const uid = req.params.uid
         const newStatus = { status: false }
         const newupdatedAt = { updatedAt: new Date() }
-        const userDelete = await userService.updateOne(uid, newStatus, newupdatedAt)
+        const userDelete = await userService.updateOneAndStatus(uid, newStatus, newupdatedAt)
         
         req.logger.info('User Deleted')
         res
