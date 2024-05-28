@@ -72,7 +72,9 @@ router.post('/forgot-password', async (req, res) => {
       cart: user.cart,
     })
 
-    const resetLink = `http://localhost:8080/api/reset-password/${token}`;
+    //const resetLink = `http://localhost:8080/api/reset-password/${token}`;
+
+    const resetLink = `pb-sdrigottirodrigo-ecommerce-production.up.railway.app/api/reset-password/${token}`;
 
     transport.sendMail({
       from: serviceEmail.email.identifier,
